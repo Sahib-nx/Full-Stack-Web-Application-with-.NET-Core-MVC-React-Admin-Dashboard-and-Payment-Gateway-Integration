@@ -1,0 +1,334 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+ }
+
+@model CRM.Models.ViewModel.HybridModel;
+<link rel="stylesheet" href="~/css/Buyer.css">
+
+<div class="hero-section">
+    <div class="container">
+        <h1 class="cart-title">Your Shopping Cart</h1>
+    </div>
+</div>
+
+<div class="cart-section">
+    <div class="container">
+        @if (string.IsNullOrEmpty(ViewBag.cartEmpty))
+        {
+            <div class="cart-container">
+                <div class="cart-items">
+                    <div class="cart-header">
+                        <div class="cart-header-item image">Image</div>
+                        <div class="cart-header-item product">Product</div>
+                        <div class="cart-header-item price">Price</div>
+                        <div class="cart-header-item quantity">Quantity</div>
+                        <div class="cart-header-item total">Total</div>
+                        <div class="cart-header-item remove">Remove</div>
+                    </div>
+
+                    <div class="cart-items-container">
+                        @foreach (var cartProduct in Model.CartProducts)
+                        {
+                            <div class="cart-item" data-product-id="@cartProduct?.Product?.ProductId" data-price="@cartProduct?.Product?.Price">
+                                <div class="cart-item-image">
+                                    <img src="~/images/product-1.png" alt="@cartProduct?.Product?.ProductName">
+                                </div>
+                                <div class="cart-item-product">
+                                    <h3>@cartProduct?.Product?.ProductName</h3>
+                                </div>
+                                <div class="cart-item-price">$@cartProduct?.Product?.Price</div>
+                                <div class="cart-item-quantity">
+                                    <div class="quantity-control">
+                                        <button class="quantity-btn decrease" type="button">−</button>
+                                        <input type="number" class="quantity-input" value="@cartProduct?.Quantity" min="1" data-initial-quantity="@cartProduct?.Quantity">
+                                        <button class="quantity-btn increase" type="button">+</button>
+                                    </div>
+                                </div>
+                                <div class="cart-item-total">$<span class="item-total">@(cartProduct?.Quantity * cartProduct?.Product?.Price)</span></div>
+                                <div class="cart-item-remove">
+                                    <button class="remove-btn" data-id="@cartProduct?.Product?.ProductId">
+                                        <span class="remove-icon">×</span>
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="cart-actions">
+                    <div class="coupon-section">
+                        <h3>Reward Coupon</h3>
+                        <p>Enter your coupon code if you have one to see our latest offers just for you</p>
+                        <div class="coupon-input-group">
+                            <input type="text" id="coupon" placeholder="Coupon Code">
+                            <button class="apply-coupon-btn">Apply Coupon</button>
+                        </div>
+                    </div>
+
+                    @if (Model.Cart != null)
+                    {
+                        <div class="cart-summary">
+                            <h3>Cart Totals</h3>
+                            <div class="summary-row">
+                                <span>Subtotal</span>
+                                <span class="subtotal-value">$@Model?.Cart?.CartValue</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Discount</span>
+                                <span class="discount-value">-$<span id="discount-amount">0</span></span>
+                            </div>
+                            <div class="summary-row total-row">
+                                <span>Total</span>
+                                <span class="total-value">$<span id="total-amount">@Model?.Cart?.CartValue</span></span>
+                            </div>
+                            <a href="@Url.Action("CheckOut", "Order", new { CartId = Model?.Cart?.CartId })" class="checkout-btn">
+                                Proceed to Checkout
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="empty-cart">
+                <div class="empty-cart-content">
+                    <svg class="cart-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="120" height="120">
+                        <path d="M4.00488 16V4H2.00488V2H5.00488C5.55717 2 6.00488 2.44772 6.00488 3V15H18.4433L20.4433 7H8.00488V5H21.7241C22.2764 5 22.7241 5.44772 22.7241 6C22.7241 6.08176 22.7141 6.16322 22.6942 6.24254L20.1942 16.2425C20.083 16.6877 19.683 17 19.2241 17H5.00488C4.4526 17 4.00488 16.5523 4.00488 16ZM6.00488 23C4.90031 23 4.00488 22.1046 4.00488 21C4.00488 19.8954 4.90031 19 6.00488 19C7.10945 19 8.00488 19.8954 8.00488 21C8.00488 22.1046 7.10945 23 6.00488 23ZM18.0049 23C16.9003 23 16.0049 22.1046 16.0049 21C16.0049 19.8954 16.9003 19 18.0049 19C19.1095 19 20.0049 19.8954 20.0049 21C20.0049 22.1046 19.1095 23 18.0049 23Z" fill="#8b6f47"/>
+                    </svg>
+                    <h2>@ViewBag.cartEmpty</h2>
+                    <div class="empty-cart-actions">
+                        <a href="/home/shop" class="shop-btn">Browse Products</a>
+                        <a href="/buyer/orders" class="orders-btn">View Your Orders</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Variables
+    let cartItems = document.querySelectorAll('.cart-item');
+    let subtotalElement = document.querySelector('.subtotal-value');
+    let discountElement = document.querySelector('#discount-amount');
+    let totalElement = document.querySelector('#total-amount');
+    let couponInput = document.querySelector('#coupon');
+    let applyCouponButton = document.querySelector('.apply-coupon-btn');
+    
+    // Initialize cart values
+    updateCartTotals();
+    
+    // For each cart item, attach event listeners to quantity buttons
+    cartItems.forEach(item => {
+        const decreaseBtn = item.querySelector('.decrease');
+        const increaseBtn = item.querySelector('.increase');
+        const quantityInput = item.querySelector('.quantity-input');
+        const totalDisplay = item.querySelector('.item-total');
+        const removeBtn = item.querySelector('.remove-btn');
+        const price = parseFloat(item.dataset.price);
+        
+        // Update quantity and total when user changes input value directly
+        quantityInput.addEventListener('change', function() {
+            let quantity = parseInt(this.value) || 1;
+            // Ensure quantity is at least 1
+            if (quantity < 1) {
+                quantity = 1;
+                this.value = 1;
+            }
+            updateItemTotal(item, price, quantity, totalDisplay);
+            updateCartTotals();
+        });
+        
+        // Decrease button functionality
+        decreaseBtn.addEventListener('click', function() {
+            let currentValue = parseInt(quantityInput.value) || 0;
+            if (currentValue > 1) {
+                currentValue--;
+                quantityInput.value = currentValue;
+                updateItemTotal(item, price, currentValue, totalDisplay);
+                updateCartTotals();
+                // Add animation class
+                animateElement(totalDisplay.parentElement);
+            }
+        });
+        
+        // Increase button functionality
+        increaseBtn.addEventListener('click', function() {
+            let currentValue = parseInt(quantityInput.value) || 0;
+            currentValue++;
+            quantityInput.value = currentValue;
+            updateItemTotal(item, price, currentValue, totalDisplay);
+            updateCartTotals();
+            // Add animation class
+            animateElement(totalDisplay.parentElement);
+        });
+        
+        // Remove button functionality
+        if (removeBtn) {
+            removeBtn.addEventListener('click', function() {
+                const productId = this.dataset.id;
+                // Animation before removal
+                item.style.animation = 'fadeIn 0.3s ease-out reverse';
+                setTimeout(() => {
+                    item.remove();
+                    updateCartTotals();
+                    
+                    // If no items left, show empty cart message
+                    if (document.querySelectorAll('.cart-item').length === 0) {
+                        location.reload(); // Reload to show empty cart state
+                    }
+                    
+                     // Here you would typically make an AJAX request to remove the item from cart on server
+                    // Example:
+                     @* fetch('/Cart/RemoveItem/' + productId, { method: 'POST' })
+                        .then(response => response.json())
+                        .then(data => console.log('Item removed', data));  *@
+                }, 300);
+            });
+        }
+    });
+    
+    // Apply coupon button functionality
+    if (applyCouponButton) {
+        applyCouponButton.addEventListener('click', function() {
+            const couponCode = couponInput.value.trim();
+            if (couponCode) {
+                // Show loading state
+                this.textContent = 'Applying...';
+                this.disabled = true;
+                
+                // Simulate coupon check (in production, replace with actual API call)
+                setTimeout(() => {
+                    // Reset button state
+                    this.textContent = 'Apply Coupon';
+                    this.disabled = false;
+                    
+                    // For demo, apply a 10% discount if coupon is "SAVE10"
+                    if (couponCode.toUpperCase() === 'SAVE10') {
+                        const subtotal = calculateSubtotal();
+                        const discount = subtotal * 0.1; // 10% discount
+                        
+                        // Update discount and total
+                        discountElement.textContent = discount.toFixed(2);
+                        const newTotal = subtotal - discount;
+                        totalElement.textContent = newTotal.toFixed(2);
+                        
+                        // Show success message
+                        showNotification('Coupon applied successfully!', 'success');
+                        
+                        // Animate the total
+                        animateElement(document.querySelector('.total-row'));
+                    } else {
+                        // Show error message
+                        showNotification('Invalid coupon code.', 'error');
+                    }
+                }, 800);
+            } else {
+                showNotification('Please enter a coupon code.', 'error');
+            }
+        });
+    }
+    
+    // Helper Functions
+    
+    // Update individual item total
+    function updateItemTotal(item, price, quantity, totalDisplay) {
+        const itemTotal = price * quantity;
+        totalDisplay.textContent = itemTotal.toFixed(2);
+    }
+    
+    // Calculate subtotal from all items
+    function calculateSubtotal() {
+        let subtotal = 0;
+        document.querySelectorAll('.cart-item').forEach(item => {
+            const price = parseFloat(item.dataset.price);
+            const quantity = parseInt(item.querySelector('.quantity-input').value) || 1;
+            subtotal += price * quantity;
+        });
+        return subtotal;
+    }
+    
+    // Update all cart totals
+    function updateCartTotals() {
+        const subtotal = calculateSubtotal();
+        const discount = parseFloat(discountElement?.textContent || 0);
+        
+        if (subtotalElement) {
+            subtotalElement.textContent = '$' + subtotal.toFixed(2);
+        }
+        
+        if (totalElement) {
+            totalElement.textContent = (subtotal - discount).toFixed(2);
+        }
+    }
+    
+    // Add animation to an element
+    function animateElement(element) {
+        element.classList.remove('price-update');
+        void element.offsetWidth; // Force reflow
+        element.classList.add('price-update');
+    }
+    
+    // Show notification
+    function showNotification(message, type) {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+        
+        // Add to DOM
+        document.body.appendChild(notification);
+        
+        // Animation
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 10);
+        
+        // Remove after delay
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }, 3000);
+    }
+    
+    // Additional styles for notifications
+    const style = document.createElement('style');
+    style.textContent = `
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 4px;
+            color: white;
+            font-weight: 500;
+            max-width: 300px;
+            z-index: 1000;
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background-color: #2ecc71;
+        }
+        
+        .notification.error {
+            background-color: #e74c3c;
+        }
+    `;
+    document.head.appendChild(style);
+});
+</script>

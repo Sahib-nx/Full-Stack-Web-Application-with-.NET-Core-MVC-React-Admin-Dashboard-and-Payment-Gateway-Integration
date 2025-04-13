@@ -1,0 +1,216 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+@model CRM.Models.ViewModel.HybridModel
+
+
+<link rel="stylesheet" href="~/css/Order.css">
+
+<div class="payment-container">
+    <div class="payment-header">
+        <h2>Complete Your Payment</h2>
+        <p>Please review your order details before proceeding</p>
+    </div>
+    
+    <div class="payment-body">
+        <div class="order-info">
+            <div class="order-info-item">
+                <span>Order ID:</span>
+                <span id="orderId">@Model?.Order?.OrderId</span>
+            </div>
+            <div class="order-info-item">
+                <span>Total Payment:</span>
+                <span id="amount" class="amount-highlight">@Model?.Order?.OrderPrice $</span>
+            </div>
+        </div>
+        
+        <div class="products-list">
+            <h3>Products</h3>
+            @if (Model?.OrderProducts != null && Model.OrderProducts.Any())
+            {
+                foreach (var product in Model.OrderProducts)
+                {
+                    <div class="product-item">
+                        <span>@product?.Product?.ProductName</span>
+                        <span>x @product?.Quantity</span>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>No products found</p>
+            }
+        </div>
+        
+        <div class="address-box">
+            <h3>Shipping Address</h3>
+            @if (Model?.Address != null)
+            {
+                <div class="address-details">
+                    <p><strong>@Model.Address.FirstName @Model.Address.LastName</strong></p>
+                    <p>@Model.Address.Street1, @Model.Address.Street2</p>
+                    <p>@Model.Address.District, @Model.Address.State - @Model.Address.Pincode</p>
+                    <p>Landmark: @Model.Address.Landmark</p>
+                    <p>Phone: <span id="customerPhone">@Model.Address.Phone</span></p>
+                </div>
+            }
+            else
+            {
+                <p>No address information available</p>
+            }
+        </div>
+        
+        <button id="payNowBtn" class="payment-button" type="button" onclick="payNow()">
+            Pay Now
+        </button>
+    </div>
+</div>
+
+<div id="processingOverlay" class="processing-overlay">
+    <div class="processing-spinner"></div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    async function payNow() {
+        // Add button animation
+        const button = document.getElementById('payNowBtn');
+        button.innerHTML = 'Processing...';
+        button.disabled = true;
+        
+        // Show processing overlay with animation
+        const overlay = document.getElementById('processingOverlay');
+        overlay.classList.add('show');
+        
+        console.log("Payment initiated");
+        const amount = parseFloat(document.getElementById('amount').innerText);
+        const orderId = document.getElementById('orderId').innerText;
+        const phone = document.getElementById('customerPhone')?.innerText || '';
+        
+        if (!amount || amount <= 0) {
+            hideProcessing();
+            showNotification('Invalid amount', 'error');
+            return;
+        }
+        
+        try {
+            // Create order by calling the server endpoint
+            const response = await fetch('/paymentApi/create/paymentIntent', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    amount: amount, 
+                    currency: 'INR', 
+                    orderId: orderId 
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to create payment intent');
+            }
+            
+            const order = await response.json();
+            console.log(order);
+            
+            // Hide processing overlay before opening Razorpay
+            hideProcessing();
+            
+            // Open Razorpay Checkout
+            const options = {
+                key: 'rzp_test_RgG9AwfnysizZu',
+                amount: order.amount,
+                currency: order.currency,
+                name: 'Sahib',
+                description: 'Payment Transaction',
+                order_id: order.orderId,
+                prefill: {
+                    name: 'Sahib Khan',
+                    email: 'sahib@gmail.com',
+                    contact: phone
+                },
+                theme: {
+                    color: '#C09766'
+                },
+                modal: {
+                    ondismiss: function() {
+                        resetButton();
+                    }
+                },
+                handler: function(response) {
+                    // Handle successful payment
+                    showNotification('Payment successful!', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/Order/Payment-success?orderId=' + orderId;
+                    }, 1500);
+                }
+            };
+            
+            const rzp = new Razorpay(options);
+            rzp.open();
+            
+        } catch (error) {
+            console.error('Payment error:', error);
+            hideProcessing();
+            showNotification(error.message || 'Payment processing failed', 'error');
+        }
+    }
+    
+    function hideProcessing() {
+        const overlay = document.getElementById('processingOverlay');
+        overlay.classList.remove('show');
+        resetButton();
+    }
+    
+    function resetButton() {
+        const button = document.getElementById('payNowBtn');
+        button.innerHTML = 'Pay Now';
+        button.disabled = false;
+    }
+    
+    function showNotification(message, type) {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = 'notification ' + type;
+        notification.innerHTML = message;
+        
+        // Style the notification
+        Object.assign(notification.style, {
+            position: 'fixed',
+            top: '20px',
+            right: '20px',
+            padding: '15px 25px',
+            backgroundColor: type === 'success' ? '#4CAF50' : '#F44336',
+            color: 'white',
+            borderRadius: '4px',
+            boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+            zIndex: '10000',
+            opacity: '0',
+            transform: 'translateY(-20px)',
+            transition: 'all 0.3s ease'
+        });
+        
+        // Add to DOM
+        document.body.appendChild(notification);
+        
+        // Trigger animation
+        setTimeout(() => {
+            notification.style.opacity = '1';
+            notification.style.transform = 'translateY(0)';
+        }, 10);
+        
+        // Remove after delay
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateY(-20px)';
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 3000);
+    }
+</script>

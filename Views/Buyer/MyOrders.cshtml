@@ -1,0 +1,252 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using CRM.Types
+@model CRM.Models.ViewModel.HybridModel;
+@{
+    ViewData["Title"] = "MyOrders";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="stylesheet" href="~/css/Buyer.css">
+
+<style>
+   
+</style>
+
+<div class="order-container fade-in">
+    <h1 class="page-title">
+        <i class="fas fa-shopping-bag"></i> My Orders
+    </h1>
+    <p class="order-count animate__animated animate__fadeIn" id="orderCount">Displaying @Model.Orders.Count orders</p>
+
+    @if (!Model.Orders.Any())
+    {
+        <div class="no-orders animate__animated animate__fadeIn">
+            <i class="fas fa-box-open"></i>
+            <h3>No Orders Found</h3>
+            <p>Looks like you haven't placed any orders yet.</p>
+            <a href="@Url.Action("Index", "Shop")" class="btn btn-primary">
+                Browse Products
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="orders-list">
+            @foreach (var order in Model.Orders)
+            {
+                var delay = Model.Orders.IndexOf(order) * 0.1;
+                <div class="order-card animate__animated animate__fadeInUp" style="animation-delay: @delay" data-order-id="@order.OrderId">
+                    <div class="order-header">
+                        <div class="order-number">
+                            Order #@order.OrderId
+                        </div>
+                        <div class="order-date">
+                            <i class="far fa-calendar-alt"></i> Placed on @order.DateCreated.ToString("dd MMM, yyyy")
+                        </div>
+                    </div>
+                    <div class="order-body">
+                        <div class="order-row">
+                            <div class="order-image">
+                                <img src="@order.OrderProducts.FirstOrDefault()?.Product?.ProductProfileUrl" alt="Product Image" class="scale-in">
+                            </div>
+                            <div class="order-details">
+                                <div class="status-label">
+                                    ORDER STATUS
+                                </div>
+                                <div class="status-value @(order.OrderStatus == Status.Completed ? "status-completed" : order.OrderStatus == Status.Intransit ? "status-intransit" : "status-pending")">
+                                    <i class="@(order.OrderStatus == Status.Completed ? "fas fa-check-circle" : order.OrderStatus == Status.Intransit ? "fas fa-truck" : "fas fa-clock")"></i>
+                                    @order.OrderStatus
+                                </div>
+
+                                @if (order.OrderStatus == Status.Pending || order.OrderStatus == Status.Intransit)
+                                {
+                                    <p class="estimated-delivery">
+                                        <i class="fas fa-calendar-day"></i> Estimated delivery: @order.DateCreated.AddHours(168).ToString("dddd, MMMM d, yyyy")
+                                    </p>
+                                }
+                                else if (order.OrderStatus == Status.Completed)
+                                {
+                                    <p class="estimated-delivery status-completed">
+                                        <i class="fas fa-check-circle"></i> Delivered on @order.DateCreated.ToString("dddd, MMMM d, yyyy")
+                                    </p>
+                                }
+
+                                <div class="progress-container">
+                                    <div class="progress-bar-custom">
+                                        @if (order.OrderStatus == Status.Pending)
+                                        {
+                                            <div class="progress-step progress-pending"></div>
+                                        }
+                                        else if (order.OrderStatus == Status.Intransit)
+                                        {
+                                            <div class="progress-step progress-intransit"></div>
+                                        }
+                                        else if (order.OrderStatus == Status.Completed)
+                                        {
+                                            <div class="progress-step progress-completed"></div>
+                                        }
+                                    </div>
+                                    <div class="progress-milestones">
+                                        <div class="milestone @(order.OrderStatus == Status.Pending || order.OrderStatus == Status.Intransit || order.OrderStatus == Status.Completed ? "milestone-active" : "")">
+                                            <div class="milestone-icon">
+                                                <i class="fas fa-box"></i>
+                                            </div>
+                                            <div class="milestone-text">Ordered</div>
+                                        </div>
+                                        <div class="milestone @(order.OrderStatus == Status.Intransit || order.OrderStatus == Status.Completed ? "milestone-active" : "")">
+                                            <div class="milestone-icon">
+                                                <i class="fas fa-truck"></i>
+                                            </div>
+                                            <div class="milestone-text">In Transit</div>
+                                        </div>
+                                        <div class="milestone @(order.OrderStatus == Status.Completed ? "milestone-active" : "")">
+                                            <div class="milestone-icon">
+                                                <i class="fas fa-home"></i>
+                                            </div>
+                                            <div class="milestone-text">Delivered</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="product-list-container">
+                                    <div class="product-list-title" onclick="toggleProductList(this)">
+                                        <span>Products in Order <span class="product-count">(@order.OrderProducts.Count)</span></span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="product-list">
+                                        @foreach (var product in order.OrderProducts)
+                                        {
+                                            <div class="product-item">
+                                                <div class="product-name">@product?.Product?.ProductName</div>
+                                                <div class="product-quantity">Qty: @product?.Quantity</div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="order-total">
+                                    <div class="total-label">Total Price</div>
+                                    <div class="total-value">₹@order.OrderPrice</div>
+                                </div>
+
+                                <div class="actions">
+                                    <a href="@Url.Action("OrderDetails", "Orders", new { id = order.OrderId })" class="btn btn-primary">
+                                        <i class="fas fa-eye"></i> View Details
+                                    </a>
+                                    
+                                    @if (order.OrderStatus == Status.Pending)
+                                    {
+                                        <a href="@Url.Action("CancelOrder", "Orders", new { id = order.OrderId })" class="btn btn-danger cancel-order">
+                                            <i class="fas fa-times"></i> Cancel Order
+                                        </a>
+                                    }
+                                    else if (order.OrderStatus == Status.Intransit)
+                                    {
+                                        <a href="@Url.Action("TrackOrder", "Orders", new { id = order.OrderId })" class="btn btn-secondary">
+                                            <i class="fas fa-map-marker-alt"></i> Track Order
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+    // Initialize animations when page loads
+    document.addEventListener('DOMContentLoaded', function () {
+        // Animate header elements
+        gsap.from('.page-title', { duration: 0.8, y: -20, opacity: 0 });
+        gsap.from('.order-count', { duration: 0.8, y: -10, opacity: 0, delay: 0.3 });
+        
+        // Animate order cards with stagger
+        gsap.from('.order-card', { 
+            duration: 0.6, 
+            y: 30, 
+            opacity: 0, 
+            stagger: 0.15,
+            ease: "power2.out" 
+        });
+        
+        // Add hover animation for order cards
+        const orderCards = document.querySelectorAll('.order-card');
+        orderCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                gsap.to(this, { 
+                    y: -5, 
+                    boxShadow: '0 15px 35px rgba(0, 0, 0, 0.1)', 
+                    duration: 0.3 
+                });
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                gsap.to(this, { 
+                    y: 0, 
+                    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.05)', 
+                    duration: 0.3 
+                });
+            });
+        });
+        
+        // Add shimmer loading effect
+        const shimmerElements = document.querySelectorAll('.shimmer');
+        shimmerElements.forEach(el => {
+            el.classList.remove('shimmer');
+        });
+    });
+    
+    // Toggle product list
+    function toggleProductList(element) {
+        const productList = element.nextElementSibling;
+        element.classList.toggle('expanded');
+        productList.classList.toggle('expanded');
+        
+        if (productList.classList.contains('expanded')) {
+            gsap.from(productList.children, { 
+                y: 10, 
+                opacity: 0, 
+                stagger: 0.05, 
+                duration: 0.3 
+            });
+        }
+    }
+    
+    // Cancel order confirmation
+    const cancelButtons = document.querySelectorAll('.cancel-order');
+    cancelButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            if (!confirm('Are you sure you want to cancel this order?')) {
+                e.preventDefault();
+            }
+        });
+    });
+    
+    // Add smooth loading transitions
+    window.addEventListener('load', function() {
+        document.body.classList.add('loaded');
+    });
+    
+    // Intersection Observer for on-scroll animations
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate__fadeInUp');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    document.querySelectorAll('.order-card').forEach(card => {
+        observer.observe(card);
+    });
+</script>

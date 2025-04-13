@@ -1,0 +1,344 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model CRM.Models.ViewModel.HybridModel
+
+<link rel="stylesheet" href="~/css/Order.css">
+
+
+    
+
+    <!-- Hero Section -->
+    <div class="hero" style="z-index: 0;!important">
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-lg-5">
+                    <div class="intro-excerpt">
+                        <h1>Checkout</h1>
+                    </div>
+                </div>
+                <div class="col-lg-7"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container" style="z-index: 0; !important">
+        <!-- Returning Customer Notice -->
+        <div class="row mb-5">
+            <div class="col-md-12">
+                <div class="alert alert-info" role="alert">
+                    Returning customer? <a href="#" style="color: var(--gold); text-decoration: none; font-weight: 600;">Click here</a> to login
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Left Column - Billing Details -->
+            <div class="col-md-6 mb-5">
+                <div class="checkout-section">
+                    <div class="checkout-section-header">
+                        <h2>Billing Details</h2>
+                    </div>
+                    <div class="checkout-section-body">
+                        <form method="post" action="/Buyer/CreateAddress">
+                            <div class="form-group">
+                                <label for="country">Country <span class="text-danger">*</span></label>
+                                <select class="form-control" name="Country" id="country">
+                                    @if(string.IsNullOrEmpty(Model?.Address?.Country)) {
+                                        <option>Select Your Country</option>
+                                    }
+                                    <option value="India">India</option>
+                                    <option value="Bangladesh">Bangladesh</option>
+                                    <option value="Sri lanka">Sri lanka</option>
+                                    <option value="Nepal">Nepal</option>
+                                </select>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>First Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="FirstName" value="@Model?.Address?.FirstName">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Last Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="LastName" value="@Model?.Address?.LastName">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Street <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="Street1" value="@Model?.Address?.Street1" placeholder="Street 1">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Apartment <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="Street2" value="@Model?.Address?.Street2" placeholder="Apartment, suite, unit etc.">
+                            </div>
+
+                            <div class="form-group">
+                                <label>District <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="District" value="@Model?.Address?.District" placeholder="District">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>State <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="State" value="@Model?.Address?.State">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Postal / ZipCode <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="Pincode" value="@Model?.Address?.Pincode">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Landmark <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="Landmark" value="@Model?.Address?.Landmark">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Phone <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="Phone" placeholder="Phone Number" value="@Model?.Address?.Phone">
+                                    </div>
+                                </div>
+                            </div>
+
+                            @if(!string.IsNullOrEmpty(ViewBag.ErrorMessage)){
+                                <p class="text-danger">Warning: @ViewBag.ErrorMessage</p>
+                            }
+
+                            <div class="form-group">
+                                <button class="btn btn-gold btn-block">
+                                    @if(Model?.Address == null){
+                                        <span>Add Address</span>
+                                    } else {
+                                        <span>Change Address</span>
+                                    }
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Ship to Different Address -->
+                <div class="checkout-section mt-3">
+                    <div class="checkout-section-body">
+                        <div class="form-group">
+                            <label for="ship_different" class="text-black">
+                                <input type="checkbox" id="ship_different"> 
+                                Ship To A Different Address?
+                            </label>
+                            <div id="ship_different_address" style="display: none; margin-top: 1rem;">
+                                <p>Here we will show all the other addresses user have</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Notes -->
+                <div class="checkout-section mt-3">
+                    <div class="checkout-section-header">
+                        <h2>Order Notes</h2>
+                    </div>
+                    <div class="checkout-section-body">
+                        <form>
+                            <div class="form-group">
+                                <textarea name="orderNotes" id="order_notes" cols="30" rows="4" class="form-control" placeholder="Write your notes here..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-outline-gold btn-block">Add Note</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Order Summary -->
+            <div class="col-md-6">
+                <!-- Coupon Code -->
+                <div class="checkout-section">
+                    <div class="checkout-section-header">
+                        <h2>Coupon Code</h2>
+                    </div>
+                    <div class="checkout-section-body">
+                        <label for="coupon_code" class="text-black mb-3">Enter your coupon code if you have one</label>
+                        <div class="coupon-input-group">
+                            <input type="text" class="form-control" id="coupon_code" placeholder="Coupon Code">
+                            <button class="btn btn-gold" type="button">Apply</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Your Order -->
+                <div class="checkout-section mt-3">
+                    <div class="checkout-section-header">
+                        <h2>Your Order</h2>
+                    </div>
+                    <div class="checkout-section-body">
+                        <table class="order-table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach(var cartProduct in Model.CartProducts){
+                                    <tr>
+                                        <td>@cartProduct?.Product?.ProductName <strong class="mx-2">×</strong> @cartProduct?.Quantity</td>
+                                        <td>$ @(cartProduct?.Quantity * cartProduct?.Product?.Price)</td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <td><strong>Cart Subtotal</strong></td>
+                                    <td>$ @Model?.Cart?.CartValue</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Discount</strong></td>
+                                    <td><strong>$ 0</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="order-total"><strong>Order Total</strong></td>
+                                    <td class="order-total"><strong>$ @Model?.Cart?.CartValue</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        @if(Model?.Address != null){
+                            <div class="address-summary">
+                                <h5>Shipping Address</h5>
+                                <p>@Model?.Address?.FirstName @Model?.Address.LastName</p>
+                                <p>@Model?.Address.Street1, @Model?.Address.Street2, @Model?.Address.District</p>
+                                <p>@Model?.Address.State, @Model?.Address.Pincode</p>
+                                <p>Landmark: @Model?.Address.Landmark</p>
+                                <p>Phone: @Model?.Address.Phone</p>
+                            </div>
+                        }
+
+                        <!-- Payment Methods -->
+                        <div class="payment-methods mt-3">
+                            <div class="payment-method" id="method-googlepay">
+                                <div class="payment-method-header">
+                                    <h3>
+                                         <a class="d-block" data-bs-toggle="collapse" href="#collapsecheque"role="button" aria-expanded="false" aria-controls="collapsecheque">Upi</a>
+                                    </h3>
+                                </div>
+                                <div class="payment-method-body">
+                                    <p>Make your payment directly using Google Pay. Your order won't be shipped until the funds have cleared in our account.</p>
+                                </div>
+                            </div>
+
+                            <div class="payment-method" id="method-upi">
+                                <div class="payment-method-header">
+                                    <h3> 
+                                         <a class="d-block" data-bs-toggle="collapse" href="#collapsebank"role="button" aria-expanded="false" aria-controls="collapsebank">Google Pay</a>
+                                    </h3>
+                                </div>
+                                <div class="payment-method-body">
+                                    <p>Make your payment directly using UPI. Please use your Order ID as the payment reference. Your order won't be shipped until the funds have cleared in our account.</p>
+                                </div>
+                            </div>
+
+                            <div class="payment-method" id="method-card">
+                                <div class="payment-method-header">
+                                    <h3>
+                                         <a class="d-block" data-bs-toggle="collapse" href="#collapsepaypal"role="button" aria-expanded="false" aria-controls="collapsepaypal">Credit / Debit Card</a>
+                                    </h3>
+                                </div>
+                                <div class="payment-method-body">
+                                    <p>Make your payment directly using your credit or debit card. Your order won't be shipped until the funds have cleared in our account.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mt-3">
+                           <a class="btn btn-gold btn-block py-3" asp-action="create" asp-controller="order"  asp-route-OrderId ="@Model?.Order?.OrderId">Place Order</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Animation for sections on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Payment method toggle
+            const paymentMethods = document.querySelectorAll('.payment-method');
+            paymentMethods.forEach(method => {
+                const header = method.querySelector('.payment-method-header');
+                header.addEventListener('click', () => {
+                    // Close all other methods
+                    paymentMethods.forEach(m => {
+                        if (m !== method) m.classList.remove('active');
+                    });
+                    // Toggle current method
+                    method.classList.toggle('active');
+                });
+            });
+
+            // Ship to different address toggle
+            const shipDifferentCheckbox = document.getElementById('ship_different');
+            const shipDifferentAddress = document.getElementById('ship_different_address');
+            
+            shipDifferentCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    shipDifferentAddress.style.display = 'block';
+                    setTimeout(() => {
+                        shipDifferentAddress.style.opacity = '1';
+                    }, 10);
+                } else {
+                    shipDifferentAddress.style.opacity = '0';
+                    setTimeout(() => {
+                        shipDifferentAddress.style.display = 'none';
+                    }, 300);
+                }
+            });
+
+            // Form field animations
+            const formControls = document.querySelectorAll('.form-control');
+            formControls.forEach(control => {
+                control.addEventListener('focus', () => {
+                    control.closest('.form-group').classList.add('focused');
+                });
+                control.addEventListener('blur', () => {
+                    if (control.value === '') {
+                        control.closest('.form-group').classList.remove('focused');
+                    }
+                });
+                // Initialize with content
+                if (control.value !== '') {
+                    control.closest('.form-group').classList.add('focused');
+                }
+            });
+
+            // Button hover animation
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', () => {
+                    button.style.transform = 'translateY(-2px)';
+                    button.style.boxShadow = '0 6px 12px rgba(192, 151, 102, 0.2)';
+                });
+                button.addEventListener('mouseleave', () => {
+                    button.style.transform = '';
+                    button.style.boxShadow = '';
+                });
+            });
+        });
+    </script>
+
