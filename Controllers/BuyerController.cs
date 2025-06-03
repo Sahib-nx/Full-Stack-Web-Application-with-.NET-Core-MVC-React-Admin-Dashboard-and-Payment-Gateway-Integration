@@ -9,25 +9,21 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace CRM.Controllers
 {
- [Authorize]
+    [Authorize]
     public class BuyerController : Controller
     {
-
-
         private readonly SqlDbContext _dbcontext;
         private readonly ITokenService _tokenService;
         private readonly HybridModel _viewModel;
 
         public BuyerController(SqlDbContext dbContext, ITokenService tokenService)
         {
-
             _dbcontext = dbContext;
             _tokenService = tokenService;
             _viewModel = new HybridModel
             {
                 Navbar = new NavbarModel { UserRole = Types.Role.Buyer, Isloggedin = true },
             };
-
         }
 
         [HttpGet]
@@ -36,64 +32,156 @@ namespace CRM.Controllers
             return View();
         }
 
-        
         [HttpGet]
         public async Task<IActionResult> BuyerDashboard()
         {
-            //    Guid? userId = HttpContext.Items["UserId"] as Guid?;
+            var token = Request.Cookies["JusTryingToDo"];
+            if (token == null)
+            {
+                return RedirectToAction("Login");
+            }
 
-            // try
-            // {
-                var token = Request.Cookies["JusTryingToDo"];
-                if (token == null)
-                {
-                    return RedirectToAction("Login");
-                }
-
-                var userId = _tokenService.VerifyTokenGetId(token);
-                if (string.IsNullOrEmpty(userId))
-                {
-                    return RedirectToAction("Login"); // Ensure token verification returns valid userId
-                }
+            var userId = _tokenService.VerifyTokenGetId(token);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login");
+            }
 
             var user = await _dbcontext.Users.FirstOrDefaultAsync(u => u.UserId.ToString() == userId);
             if (user == null)
             {
-                return RedirectToAction("Login" , "User");
+                return RedirectToAction("Login", "User");
             }
-            // 💡 Send data to view
-            ViewBag.UserName = user.UserName;   
+
+            ViewBag.UserName = user.UserName;
             ViewBag.UserEmail = user.Email;
             return View(_viewModel);
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveProductFromCart(Guid productId)
+        {
+            var token = Request.Cookies["JusTryingToDo"];
+            if (token == null)
+            {
+                return Json(new { success = false, message = "Authentication required" });
+            }
 
-            //     if (user.Role == Types.Role.Buyer)
-            //     {
-            //         _viewModel.Navbar.UserRole = Types.Role.Buyer;
-            //         _viewModel.Navbar.Isloggedin = true;
-            //         return View(_viewModel);
-            //     }
-            //     else
-            //     {
-            //         return RedirectToAction("Login", "User");
-            //     }
+            var userId = _tokenService.VerifyTokenGetId(token);
+            if (string.IsNullOrEmpty(userId) || !Guid.TryParse(userId, out var userGuid))
+            {
+                return Json(new { success = false, message = "Invalid user" });
+            }
 
+            try
+            {
+                var cart = await _dbcontext.Carts
+                    .Include(c => c.CartProducts)
+                    .FirstOrDefaultAsync(c => c.BuyerId == userGuid);
 
+                if (cart == null)
+                {
+                    return Json(new { success = false, message = "Cart not found" });
+                }
 
+                var cartProduct = await _dbcontext.CartProducts
+                    .FirstOrDefaultAsync(cp => cp.CartId == cart.CartId && cp.ProductId == productId);
 
-            // }
-            // catch (Exception ex)
-            // {
+                if (cartProduct == null)
+                {
+                    return Json(new { success = false, message = "Product not found in cart" });
+                }
 
-            //     ViewData["ErrorMessage"] = "An error occurred: " + ex.Message;
-            //     return View();// Return the view with the error message
-            // }
+                _dbcontext.CartProducts.Remove(cartProduct);
+                
+                // Recalculate cart value
+                var remainingProducts = await _dbcontext.CartProducts
+                    .Include(cp => cp.Product)
+                    .Where(cp => cp.CartId == cart.CartId && cp.ProductId != productId)
+                    .ToListAsync();
+                
+                cart.CartValue = remainingProducts.Sum(cp => cp.Quantity * cp.Product.Price);
+                
+                await _dbcontext.SaveChangesAsync();
+
+                return Json(new { success = true, message = "Product removed successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error removing product" });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateCartQuantity(Guid productId, int quantity)
+        {
+            var token = Request.Cookies["JusTryingToDo"];
+            if (token == null)
+            {
+                return Json(new { success = false, message = "Authentication required" });
+            }
+
+            var userId = _tokenService.VerifyTokenGetId(token);
+            if (string.IsNullOrEmpty(userId) || !Guid.TryParse(userId, out var userGuid))
+            {
+                return Json(new { success = false, message = "Invalid user" });
+            }
+
+            if (quantity < 1)
+            {
+                return Json(new { success = false, message = "Quantity must be at least 1" });
+            }
+
+            try
+            {
+                var cart = await _dbcontext.Carts
+                    .Include(c => c.CartProducts)
+                    .FirstOrDefaultAsync(c => c.BuyerId == userGuid);
+
+                if (cart == null)
+                {
+                    return Json(new { success = false, message = "Cart not found" });
+                }
+
+                var cartProduct = await _dbcontext.CartProducts
+                    .Include(cp => cp.Product)
+                    .FirstOrDefaultAsync(cp => cp.CartId == cart.CartId && cp.ProductId == productId);
+
+                if (cartProduct == null)
+                {
+                    return Json(new { success = false, message = "Product not found in cart" });
+                }
+
+                cartProduct.Quantity = quantity;
+
+                // Recalculate cart value
+                var allCartProducts = await _dbcontext.CartProducts
+                    .Include(cp => cp.Product)
+                    .Where(cp => cp.CartId == cart.CartId)
+                    .ToListAsync();
+                
+                cart.CartValue = allCartProducts.Sum(cp => cp.Quantity * cp.Product.Price);
+
+                await _dbcontext.SaveChangesAsync();
+
+                return Json(new { 
+                    success = true, 
+                    message = "Quantity updated successfully",
+                    newTotal = quantity * cartProduct.Product.Price,
+                    cartTotal = cart.CartValue
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error updating quantity" });
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> Cart()
         {
-
             var token = Request.Cookies["JusTryingToDo"];
             if (token == null)
             {
@@ -105,16 +193,17 @@ namespace CRM.Controllers
             {
                 return RedirectToAction("Login", "User");
             }
+
             var user = await _dbcontext.Users.FirstOrDefaultAsync(u => u.UserId.ToString() == userId);
             if (user == null)
             {
                 return RedirectToAction("Login", "User");
             }
 
-            // Guid? userId = HttpContext.Items["UserId"] as Guid?;
-
-
-            var cart = await _dbcontext.Carts.Include(c => c.CartProducts).FirstOrDefaultAsync(c => c.BuyerId.ToString() == userId);
+            var userGuid = Guid.Parse(userId);
+            var cart = await _dbcontext.Carts
+                .Include(c => c.CartProducts)
+                .FirstOrDefaultAsync(c => c.BuyerId == userGuid);
 
             if (cart == null || cart.CartProducts.Count == 0)
             {
@@ -122,21 +211,20 @@ namespace CRM.Controllers
                 return View(_viewModel);
             }
 
+            var cartProducts = await _dbcontext.CartProducts
+                .Include(cp => cp.Product)
+                .Where(cp => cp.CartId == cart.CartId)
+                .ToListAsync();
 
-            //Now lets Find CartProducts 
-            var cartProducts = await _dbcontext.CartProducts.Include(cp => cp.Product).Where(cp => cp.CartId == cart.CartId).ToListAsync();
             _viewModel.CartProducts = cartProducts;
             _viewModel.Cart = cart;
 
             return View(_viewModel);
-
         }
-
 
         [HttpPost]
         public async Task<IActionResult> CreateAddress(Address address)
         {
-
             var token = Request.Cookies["JusTryingToDo"];
             if (token == null)
             {
@@ -148,13 +236,14 @@ namespace CRM.Controllers
             {
                 return RedirectToAction("Login", "User");
             }
+
             var user = await _dbcontext.Users.FirstOrDefaultAsync(u => u.UserId.ToString() == userId);
             if (user == null)
             {
                 return RedirectToAction("Login", "User");
             }
 
-            var availableAdress = await _dbcontext.Addresses.FirstOrDefaultAsync(a => a.BuyerId.ToString() == userId);
+            var availableAddress = await _dbcontext.Addresses.FirstOrDefaultAsync(a => a.BuyerId.ToString() == userId);
 
             if (ModelState.IsValid)
             {
@@ -162,54 +251,15 @@ namespace CRM.Controllers
                 await _dbcontext.Addresses.AddAsync(address);
                 await _dbcontext.SaveChangesAsync();
                 return RedirectToAction("CheckOut", "Order");
-
             }
 
-            ViewBag.ErrorMessage = "There Was Some problem in updation of Address!! ";
+            ViewBag.ErrorMessage = "There was some problem in updating the address!";
             return View("CheckOut", _viewModel);
-        }
-
-
-        [HttpPost]
-       
-        public async Task<IActionResult> RemoveItem(int productId)
-        {
-            var token = Request.Cookies["JusTryingToDo"];
-            if (token == null)
-            {
-                return RedirectToAction("Login", "User");
-            }
-
-            var userId = _tokenService.VerifyTokenGetId(token);
-            if (string.IsNullOrEmpty(userId))
-            {
-                return RedirectToAction("Login", "User");
-            }
-            var user = await _dbcontext.Users.FirstOrDefaultAsync(u => u.UserId.ToString() == userId);
-            if (user == null)
-            {
-                return RedirectToAction("Login", "User");
-            }
-
-
-            var cart = await _dbcontext.Carts.Include(c => c.CartProducts).FirstOrDefaultAsync(c => c.BuyerId.ToString() == userId);
-            if (cart == null)
-                return Json(new { success = false, message = "Cart not found." });
-
-            var cartProducts = await _dbcontext.CartProducts.Include(cp => cp.Product).Where(cp => cp.CartId == cart.CartId).FirstOrDefaultAsync();
-            if (cartProducts == null)
-                return Json(new { success = false, message = "Item not in cart." });
-
-            _dbcontext.CartProducts.Remove(cartProducts);
-            _dbcontext.SaveChanges();
-            return View(_viewModel);
-
         }
 
         [HttpGet]
         public async Task<IActionResult> MyOrders()
         {
-
             var token = Request.Cookies["JusTryingToDo"];
             if (token == null)
             {
@@ -221,17 +271,18 @@ namespace CRM.Controllers
             {
                 return RedirectToAction("Login", "User");
             }
+
             var user = await _dbcontext.Users.FirstOrDefaultAsync(u => u.UserId.ToString() == userId);
             if (user == null)
             {
                 return RedirectToAction("Login", "User");
             }
 
-
             var orders = await _dbcontext.Orders
-            .Include(o => o.OrderProducts)
-            .ThenInclude(op => op.Product)
-            .Where(o => o.BuyerId.ToString() == userId).ToListAsync();
+                .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
+                .Where(o => o.BuyerId.ToString() == userId)
+                .ToListAsync();
 
             if (orders.Count == 0)
             {
@@ -241,11 +292,6 @@ namespace CRM.Controllers
 
             _viewModel.Orders = orders;
             return View(_viewModel);
-
         }
-
-
-
-
     }
 }

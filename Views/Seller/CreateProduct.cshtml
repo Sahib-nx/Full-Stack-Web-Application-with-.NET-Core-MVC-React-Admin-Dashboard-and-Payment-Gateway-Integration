@@ -1,23 +1,92 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
 }
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Product</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="~/css/Seller.css">
     <style>
-
+        /* Custom theme color overrides */
+        .btn-primary {
+            background-color: #8b6f47 !important;
+            border-color: #8b6f47 !important;
+        }
+        
+        .btn-primary:hover {
+            background-color: #7a5f3c !important;
+            border-color: #7a5f3c !important;
+        }
+        
+        .btn-primary:focus, .btn-primary.focus {
+            box-shadow: 0 0 0 0.2rem rgba(139, 111, 71, 0.5) !important;
+        }
+        
+        .btn-primary:not(:disabled):not(.disabled):active,
+        .btn-primary:not(:disabled):not(.disabled).active {
+            background-color: #6d4f31 !important;
+            border-color: #6d4f31 !important;
+        }
+        
+        .nav-pills .nav-link.active {
+            background-color: #C09766 !important;
+            color: snow !important;
+        }
+        
+       /* .nav-pills .nav-link:hover {
+            background-color: rgba(139, 111, 71, 0.1) !important;
+            color: black !important;
+        }*/
+        
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #8b6f47 !important;
+            box-shadow: 0 0 0 0.2rem rgba(139, 111, 71, 0.25) !important;
+        }
+        
+        .image-upload-btn {
+            background-color: #C09766 !important;
+            border-color: #8b6f47 !important;
+            color: white !important;
+        }
+        
+        .image-upload-btn:hover {
+            background-color: #7a5f3c !important;
+            border-color: #7a5f3c !important;
+        }
+        
+        .tag {
+            background-color: #8b6f47 !important;
+            color: white !important;
+        }
+        
+        .btn-outline-secondary:focus {
+            box-shadow: 0 0 0 0.2rem rgba(139, 111, 71, 0.25) !important;
+        }
+        
+        /* Active states for form elements */
+        .form-check-input:checked {
+            background-color: #8b6f47 !important;
+            border-color: #8b6f47 !important;
+        }
+        
+        .form-range::-webkit-slider-thumb:active {
+            background-color: #8b6f47 !important;
+        }
+        
+        .form-range::-moz-range-thumb:active {
+            background-color: #8b6f47 !important;
+        }
+        
+        /* Selection colors */
+        ::selection {
+            background-color: rgba(139, 111, 71, 0.3) !important;
+        }
+        
+        ::-moz-selection {
+            background-color: rgba(139, 111, 71, 0.3) !important;
+        }
     </style>
-</head>
 
 <body>
     <div class="container main-container">
@@ -25,7 +94,7 @@
             <i class="fas fa-box-open me-2"></i> Create New Product
         </h2>
 
-        <form id="createProductForm" asp-action="CreateProduct" method="post" class="needs-validation" novalidate>
+        <form id="createProductForm" asp-action="CreateProduct" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
             <div class="row g-4">
                 <!-- Basic Information Section -->
                 <div class="col-12 form-section">
@@ -60,14 +129,50 @@
                         <div class="image-preview" id="imagePreview">
                             <img id="preview" src="/api/placeholder/400/320" alt="Product image placeholder">
                         </div>
-                        <div class="d-flex flex-column flex-md-row">
-                            <input type="url" name="ProductProfileUrl" id="ProductProfileUrl"
-                                class="form-control me-md-2 mb-2 mb-md-0" required placeholder="Enter image URL" />
-                            <button type="button" class="btn image-upload-btn" id="previewButton">
-                                <span><i class="fas fa-eye me-1"></i> Preview</span>
-                            </button>
+                        
+                        <!-- Image Upload Options -->
+                        <div class="image-upload-options mt-3">
+                            <ul class="nav nav-pills nav-justified mb-3" id="imageUploadTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="url-tab" data-bs-toggle="pill" data-bs-target="#url-panel" type="button" role="tab">
+                                        <i class="fas fa-link me-1"></i> URL
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="file-tab" data-bs-toggle="pill" data-bs-target="#file-panel" type="button" role="tab">
+                                        <i class="fas fa-upload me-1"></i> Upload File
+                                    </button>
+                                </li>
+                            </ul>
+                            
+                            <div class="tab-content" id="imageUploadContent">
+                                <!-- URL Panel -->
+                                <div class="tab-pane fade show active" id="url-panel" role="tabpanel">
+                                    <div class="d-flex flex-column flex-md-row">
+                                        <input type="url" name="ProductProfileUrl" id="ProductProfileUrl"
+                                            class="form-control me-md-2 mb-2 mb-md-0" placeholder="Enter image URL" />
+                                        <button type="button" class="btn image-upload-btn" id="previewUrlButton"> 
+                                            <span><i class="fas fa-eye me-1"></i> Preview</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- File Panel -->
+                                <div class="tab-pane fade" id="file-panel" role="tabpanel">
+                                    <div class="file-upload-area">
+                                        <input type="file" name="ProductImageFile" id="ProductImageFile" 
+                                            class="form-control" accept="image/*" />
+                                        <div class="file-upload-info mt-2">
+                                            <small class="text-muted">
+                                                <i class="fas fa-info-circle me-1"></i>
+                                                Supported formats: JPG, PNG, GIF, WEBP (Max: 5MB)
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="invalid-feedback">Please provide an image URL.</div>
+                        <div class="invalid-feedback">Please provide an image URL or upload a file.</div>
                     </div>
                 </div>
 
@@ -198,198 +303,275 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Optimized configuration
+        const CONFIG = {
+            MAX_FILE_SIZE: 5 * 1024 * 1024, // 5MB
+            ALLOWED_TYPES: ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'],
+            ANIMATION_DURATION: 300,
+            SUBCATEGORIES: {
+                'Everyday Wear': ['Men', 'Women', 'Unisex'],
+                'Office Wear': ['Men', 'Women', 'Unisex'],
+                'Daily Wear': ['Men', 'Women', 'Unisex'],
+                'Luxury & Premium Perfumes': ['Men', 'Women', 'Unisex']
+            }
+        };
+
+        // Utility functions
+        const Utils = {
+            animate: (element, animation, callback) => {
+                element.classList.add('animate__animated', `animate__${animation}`);
+                setTimeout(() => {
+                    element.classList.remove('animate__animated', `animate__${animation}`);
+                    callback && callback();
+                }, CONFIG.ANIMATION_DURATION);
+            },
+            
+            showError: (message) => {
+                // You can replace this with a toast notification
+                alert(message);
+            },
+            
+            generateSKU: (category, productName) => {
+                const categoryPrefix = category.substring(0, 3).toUpperCase();
+                const nameComponent = productName.replace(/[^a-zA-Z0-9]/g, '').substring(0, 5).toUpperCase();
+                const randomNum = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+                return `${categoryPrefix}-${nameComponent}-${randomNum}`;
+            }
+        };
+
         // Form validation
         (() => {
             'use strict'
-            const forms = document.querySelectorAll('.needs-validation')
+            const forms = document.querySelectorAll('.needs-validation');
             Array.from(forms).forEach(form => {
                 form.addEventListener('submit', event => {
                     if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
+                        event.preventDefault();
+                        event.stopPropagation();
+                        Utils.showError('Please fill in all required fields correctly.');
                     }
-                    form.classList.add('was-validated')
-                }, false)
-            })
-        })()
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
 
-        // Image preview functionality with animation
-        document.getElementById('previewButton').addEventListener('click', function () {
-            const imageUrl = document.getElementById('ProductProfileUrl').value;
-            const previewImg = document.getElementById('preview');
-            const previewContainer = document.getElementById('imagePreview');
+        // Image preview functionality
+        const ImagePreview = {
+            elements: {
+                preview: document.getElementById('preview'),
+                previewContainer: document.getElementById('imagePreview'),
+                urlInput: document.getElementById('ProductProfileUrl'),
+                fileInput: document.getElementById('ProductImageFile'),
+                urlButton: document.getElementById('previewUrlButton')
+            },
 
-            if (imageUrl) {
-                previewImg.style.opacity = "0";
+            previewFromUrl: function() {
+                const imageUrl = this.elements.urlInput.value.trim();
+                if (!imageUrl) {
+                    Utils.showError("Please enter an image URL first");
+                    return;
+                }
+
+                this.elements.preview.style.opacity = "0";
                 setTimeout(() => {
-                    previewImg.src = imageUrl;
-                    previewImg.style.opacity = "1";
-                    previewContainer.classList.add('animate__animated', 'animate__pulse');
+                    this.elements.preview.src = imageUrl;
+                    this.elements.preview.style.opacity = "1";
+                    Utils.animate(this.elements.previewContainer, 'pulse');
+                }, CONFIG.ANIMATION_DURATION);
+            },
+
+            previewFromFile: function(file) {
+                if (!this.validateFile(file)) return;
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.elements.preview.style.opacity = "0";
                     setTimeout(() => {
-                        previewContainer.classList.remove('animate__animated', 'animate__pulse');
-                    }, 1000);
-                }, 300);
-            } else {
-                previewImg.src = "/api/placeholder/400/320";
-                alert("Please enter an image URL first");
+                        this.elements.preview.src = e.target.result;
+                        this.elements.preview.style.opacity = "1";
+                        Utils.animate(this.elements.previewContainer, 'pulse');
+                    }, CONFIG.ANIMATION_DURATION);
+                };
+                reader.readAsDataURL(file);
+            },
+
+            validateFile: function(file) {
+                if (!CONFIG.ALLOWED_TYPES.includes(file.type)) {
+                    Utils.showError('Please select a valid image file (JPG, PNG, GIF, WEBP)');
+                    return false;
+                }
+                if (file.size > CONFIG.MAX_FILE_SIZE) {
+                    Utils.showError('File size must be less than 5MB');
+                    return false;
+                }
+                return true;
+            },
+
+            init: function() {
+                this.elements.urlButton.addEventListener('click', () => this.previewFromUrl());
+                this.elements.fileInput.addEventListener('change', (e) => {
+                    if (e.target.files[0]) {
+                        this.previewFromFile(e.target.files[0]);
+                    }
+                });
             }
-        });
+        };
 
-        // Hashtag functionality with animations
-        const tagInput = document.getElementById('tagInput');
-        const tagContainer = document.getElementById('tagContainer');
-        const hashTagsInput = document.getElementById('HashTags');
-        let tags = [];
+        // Hashtag functionality
+        const HashtagManager = {
+            elements: {
+                input: document.getElementById('tagInput'),
+                container: document.getElementById('tagContainer'),
+                hiddenInput: document.getElementById('HashTags')
+            },
+            tags: [],
 
-        tagInput.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter' && this.value.trim() !== '') {
-                e.preventDefault();
-                let value = this.value.trim();
+            init: function() {
+                this.elements.input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && this.elements.input.value.trim() !== '') {
+                        e.preventDefault();
+                        this.addTag(this.elements.input.value.trim());
+                        this.elements.input.value = '';
+                    }
+                });
+            },
+
+            addTag: function(value) {
                 if (!value.startsWith('#')) {
                     value = '#' + value;
                 }
 
-                if (!tags.includes(value)) {
-                    // Add animation to the container
-                    tagContainer.classList.add('animate__animated', 'animate__pulse');
-                    setTimeout(() => {
-                        tagContainer.classList.remove('animate__animated', 'animate__pulse');
-                    }, 500);
-
-                    tags.push(value);
-                    renderTags();
-                    this.value = '';
-                    updateHashTagsInput();
+                if (!this.tags.includes(value)) {
+                    this.tags.push(value);
+                    this.renderTags();
+                    this.updateHiddenInput();
+                    Utils.animate(this.elements.container, 'pulse');
                 }
-            }
-        });
+            },
 
-        function renderTags() {
-            // Clear all tags first (except the input)
-            const elements = tagContainer.querySelectorAll('.tag');
-            elements.forEach(element => {
-                element.remove();
-            });
+            removeTag: function(index) {
+                this.tags.splice(index, 1);
+                this.renderTags();
+                this.updateHiddenInput();
+            },
 
-            // Add all tags
-            tags.forEach((tag, index) => {
-                const tagElement = document.createElement('span');
-                tagElement.classList.add('tag');
-                tagElement.innerHTML = `${tag} <span class="remove-tag" data-index="${index}">×</span>`;
-                tagContainer.insertBefore(tagElement, tagInput);
-            });
+            renderTags: function() {
+                // Remove existing tags
+                this.elements.container.querySelectorAll('.tag').forEach(el => el.remove());
 
-            // Add event listeners to remove buttons
-            document.querySelectorAll('.remove-tag').forEach(button => {
-                button.addEventListener('click', function () {
-                    const index = parseInt(this.getAttribute('data-index'));
-                    const tagToRemove = this.parentNode;
-
-                    // Add fade out animation
-                    tagToRemove.style.opacity = '0';
-                    tagToRemove.style.transform = 'scale(0.8)';
-
-                    setTimeout(() => {
-                        tags.splice(index, 1);
-                        renderTags();
-                        updateHashTagsInput();
-                    }, 300);
+                // Add current tags
+                this.tags.forEach((tag, index) => {
+                    const tagElement = document.createElement('span');
+                    tagElement.classList.add('tag');
+                    tagElement.innerHTML = `${tag} <span class="remove-tag" data-index="${index}">×</span>`;
+                    this.elements.container.insertBefore(tagElement, this.elements.input);
                 });
-            });
-        }
 
-        function updateHashTagsInput() {
-            hashTagsInput.value = tags.join(' ');
-        }
+                // Add event listeners to remove buttons
+                this.elements.container.querySelectorAll('.remove-tag').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const index = parseInt(e.target.getAttribute('data-index'));
+                        const tagElement = e.target.parentNode;
+                        
+                        tagElement.style.opacity = '0';
+                        tagElement.style.transform = 'scale(0.8)';
+                        
+                        setTimeout(() => {
+                            this.removeTag(index);
+                        }, CONFIG.ANIMATION_DURATION);
+                    });
+                });
+            },
 
-        // Category and subcategory relationship with animation
-        const categorySelect = document.getElementById('Category');
-        const subcategorySelect = document.getElementById('SubCategory');
-
-        const subcategories = {
-            'Everyday Wear': ['Men', 'Women', 'Unisex'],
-            'Office Wear':  ['Men', 'Women', 'Unisex'],
-            'Daily Wear':  ['Men', 'Women', 'Unisex'],
-            'Luxury & Premium Perfumes':  ['Men', 'Women', 'Unisex']
+            updateHiddenInput: function() {
+                this.elements.hiddenInput.value = this.tags.join(' ');
+            }
         };
 
-        categorySelect.addEventListener('change', function () {
-            const category = this.value;
+        // Category manager
+        const CategoryManager = {
+            elements: {
+                category: document.getElementById('Category'),
+                subcategory: document.getElementById('SubCategory')
+            },
 
-            // Add animation to subcategory select
-            subcategorySelect.classList.add('animate__animated', 'animate__fadeOut');
+            init: function() {
+                this.elements.category.addEventListener('change', () => {
+                    const category = this.elements.category.value;
+                    this.updateSubcategories(category);
+                });
+            },
 
-            setTimeout(() => {
-                subcategorySelect.innerHTML = '<option value="" selected disabled>Select a subcategory</option>';
+            updateSubcategories: function(category) {
+                Utils.animate(this.elements.subcategory, 'fadeOut', () => {
+                    this.elements.subcategory.innerHTML = '<option value="" selected disabled>Select a subcategory</option>';
 
-                if (subcategories[category]) {
-                    subcategories[category].forEach(sub => {
-                        const option = document.createElement('option');
-                        option.value = sub;
-                        option.textContent = sub;
-                        subcategorySelect.appendChild(option);
-                    });
-                }
+                    if (CONFIG.SUBCATEGORIES[category]) {
+                        CONFIG.SUBCATEGORIES[category].forEach(sub => {
+                            const option = document.createElement('option');
+                            option.value = sub;
+                            option.textContent = sub;
+                            this.elements.subcategory.appendChild(option);
+                        });
+                    }
 
-                subcategorySelect.classList.remove('animate__fadeOut');
-                subcategorySelect.classList.add('animate__fadeIn');
-
-                setTimeout(() => {
-                    subcategorySelect.classList.remove('animate__animated', 'animate__fadeIn');
-                }, 500);
-            }, 300);
-        });
-
-        // SKU Generator with animation
-        document.getElementById('generateSKU').addEventListener('click', function () {
-            const category = document.getElementById('Category').value;
-            const productName = document.getElementById('ProductName').value;
-            const skuField = document.getElementById('SKU');
-
-            if (category && productName) {
-                const categoryPrefix = category.substring(0, 3).toUpperCase();
-                const nameComponent = productName.replace(/[^a-zA-Z0-9]/g, '').substring(0, 5).toUpperCase();
-                const randomNum = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-
-                // Animate the SKU field
-                skuField.classList.add('animate__animated', 'animate__fadeOut');
-
-                setTimeout(() => {
-                    skuField.value = `${categoryPrefix}-${nameComponent}-${randomNum}`;
-                    skuField.classList.remove('animate__fadeOut');
-                    skuField.classList.add('animate__fadeIn');
-
-                    setTimeout(() => {
-                        skuField.classList.remove('animate__animated', 'animate__fadeIn');
-                    }, 500);
-                }, 300);
-            } else {
-                alert('Please enter a category and product name first to generate SKU');
+                    Utils.animate(this.elements.subcategory, 'fadeIn');
+                });
             }
-        });
+        };
 
-        // Add focus animations to all form controls
-        document.querySelectorAll('.form-control, .form-select').forEach(element => {
-            element.addEventListener('focus', function () {
-                this.parentNode.querySelector('.form-label')?.classList.add('animate__animated', 'animate__pulse');
-                setTimeout(() => {
-                    this.parentNode.querySelector('.form-label')?.classList.remove('animate__animated', 'animate__pulse');
-                }, 500);
+        // SKU Generator
+        const SKUGenerator = {
+            elements: {
+                button: document.getElementById('generateSKU'),
+                field: document.getElementById('SKU'),
+                category: document.getElementById('Category'),
+                productName: document.getElementById('ProductName')
+            },
+
+            init: function() {
+                this.elements.button.addEventListener('click', () => {
+                    const category = this.elements.category.value;
+                    const productName = this.elements.productName.value;
+
+                    if (!category || !productName) {
+                        Utils.showError('Please enter a category and product name first to generate SKU');
+                        return;
+                    }
+
+                    const sku = Utils.generateSKU(category, productName);
+                    
+                    Utils.animate(this.elements.field, 'fadeOut', () => {
+                        this.elements.field.value = sku;
+                        Utils.animate(this.elements.field, 'fadeIn');
+                    });
+                });
+            }
+        };
+
+        // Initialize all components
+        document.addEventListener('DOMContentLoaded', function() {
+            ImagePreview.init();
+            HashtagManager.init();
+            CategoryManager.init();
+            SKUGenerator.init();
+
+            // Add click effects for buttons
+            document.querySelectorAll('.btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    Utils.animate(this, 'pulse');
+                });
             });
-        });
 
-        // Add click effects for all buttons
-        document.querySelectorAll('.btn').forEach(button => {
-            button.addEventListener('click', function () {
-                this.classList.add('animate__animated', 'animate__pulse');
-                setTimeout(() => {
-                    this.classList.remove('animate__animated', 'animate__pulse');
-                }, 500);
+            // Add focus animations
+            document.querySelectorAll('.form-control, .form-select').forEach(element => {
+                element.addEventListener('focus', function() {
+                    const label = this.parentNode.querySelector('.form-label');
+                    if (label) Utils.animate(label, 'pulse');
+                });
             });
-        });
 
-        // Staggered animations on load
-        document.addEventListener('DOMContentLoaded', function () {
+            // Staggered animations on load
             const formSections = document.querySelectorAll('.form-section');
             formSections.forEach((section, index) => {
                 setTimeout(() => {
@@ -400,4 +582,3 @@
     </script>
 </body>
 
-</html>

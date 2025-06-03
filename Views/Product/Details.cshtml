@@ -1,13 +1,10 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@* For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860 *@
 @{
 }
+
 @model CRM.Models.ViewModel.HybridModel
 
-<head>
-    <link rel="stylesheet" href="~/css/Product.css">
-</head>
+    <link rel="stylesheet" href="~/css/Product.css" />
 
 
 <!-- Hero Section -->
@@ -35,7 +32,21 @@
             <div class="col-12 col-md-4 col-lg-3 mb-5">
                 <div class="product-image-container">
                     <a class="product-item" href="#">
-                        <img src="~/images/AttarMAin.png" class="img-fluid product-thumbnail" alt="">
+                        @if (!string.IsNullOrEmpty(Model.Product.ProductProfileUrl))
+                        {
+                            <img src="@Model.Product.ProductProfileUrl" 
+                                 class="img-fluid product-thumbnail" 
+                                 alt="@Model.Product.ProductName"
+                                 loading="lazy"
+                                 onerror="this.src='~/images/placeholder-product.png'; this.onerror=null;">
+                        }
+                        else
+                        {
+                            <img src="~/images/placeholder-product.png" 
+                                 class="img-fluid product-thumbnail" 
+                                 alt="Product image not available"
+                                 loading="lazy">
+                        }
                     </a>
                 </div>
             </div>
@@ -44,10 +55,12 @@
             <div class="col-12 col-md-8 col-lg-9 mb-5">
                 <div class="product-details">
                     <h2 class="product-title">@Model.Product.ProductName</h2>
-
+                    
                     @if (@Model.Product.IsArchived)
                     {
-                        <p class="unavailable"> <i class="fas fa-exclamation-circle me-1"></i>Product Unavailable</p>
+                        <p class="unavailable">
+                            <i class="fas fa-exclamation-circle me-1"></i>Product Unavailable
+                        </p>
                     }
                     else
                     {
@@ -65,8 +78,10 @@
                     @if (@Model.Product.IsArchived == false)
                     {
                         <div class="action-buttons">
-                            <a class="btn btn-primary" asp-controller="Product" asp-action="AddToCart"
-                                asp-route-ProductId="@Model.Product.ProductId">
+                            <a class="btn btn-primary" 
+                               asp-controller="Product" 
+                               asp-action="AddToCart" 
+                               asp-route-ProductId="@Model.Product.ProductId">
                                 <i class="bi bi-cart-plus"></i> Add To Cart
                             </a>
                             <a class="btn btn-secondary">

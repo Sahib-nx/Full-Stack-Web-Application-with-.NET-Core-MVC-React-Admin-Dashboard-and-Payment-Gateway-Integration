@@ -5,7 +5,11 @@
  }
 
 @model CRM.Models.ViewModel.HybridModel;
+@using Microsoft.AspNetCore.Antiforgery
+@inject IAntiforgery Antiforgery
 <link rel="stylesheet" href="~/css/Buyer.css">
+
+@Html.AntiForgeryToken()
 
 <div class="hero-section">
     <div class="container">
@@ -101,7 +105,7 @@
                     <h2>@ViewBag.cartEmpty</h2>
                     <div class="empty-cart-actions">
                         <a href="/home/shop" class="shop-btn">Browse Products</a>
-                        <a href="/buyer/orders" class="orders-btn">View Your Orders</a>
+                        <a href="/buyer/MyOrders" class="orders-btn">View Your Orders</a>
                     </div>
                 </div>
             </div>
@@ -109,10 +113,11 @@
     </div>
 </div>
 
-
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Get CSRF token
+    const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+    
     // Variables
     let cartItems = document.querySelectorAll('.cart-item');
     let subtotalElement = document.querySelector('.subtotal-value');
@@ -121,10 +126,52 @@ document.addEventListener('DOMContentLoaded', function() {
     let couponInput = document.querySelector('#coupon');
     let applyCouponButton = document.querySelector('.apply-coupon-btn');
     
-    // Initialize cart values
-    updateCartTotals();
+    // Debounce function to avoid too many API calls
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
     
-    // For each cart item, attach event listeners to quantity buttons
+    // Update quantity in database
+    async function updateQuantityInDB(productId, quantity) {
+        try {
+            const formData = new FormData();
+            formData.append('productId', productId);
+            formData.append('quantity', quantity);
+            formData.append('__RequestVerificationToken', token);
+
+            const response = await fetch('/Buyer/UpdateCartQuantity', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+            
+            if (result.success) {
+                // Update the cart totals with server response
+                updateCartTotalsFromServer(result.cartTotal);
+                return true;
+            } else {
+                showNotification(result.message || 'Failed to update quantity', 'error');
+                return false;
+            }
+        } catch (error) {
+            showNotification('Error updating quantity', 'error');
+            return false;
+        }
+    }
+    
+    // Debounced version of update quantity
+    const debouncedUpdateQuantity = debounce(updateQuantityInDB, 800);
+    
+    // For each cart item, attach event listeners
     cartItems.forEach(item => {
         const decreaseBtn = item.querySelector('.decrease');
         const increaseBtn = item.querySelector('.increase');
@@ -132,100 +179,132 @@ document.addEventListener('DOMContentLoaded', function() {
         const totalDisplay = item.querySelector('.item-total');
         const removeBtn = item.querySelector('.remove-btn');
         const price = parseFloat(item.dataset.price);
+        const productId = item.dataset.productId;
         
-        // Update quantity and total when user changes input value directly
+        // Update quantity when user changes input directly
         quantityInput.addEventListener('change', function() {
             let quantity = parseInt(this.value) || 1;
-            // Ensure quantity is at least 1
             if (quantity < 1) {
                 quantity = 1;
                 this.value = 1;
             }
+            
+            // Update UI immediately
             updateItemTotal(item, price, quantity, totalDisplay);
             updateCartTotals();
+            
+            // Update database
+            debouncedUpdateQuantity(productId, quantity);
         });
         
-        // Decrease button functionality
+        // Decrease button
         decreaseBtn.addEventListener('click', function() {
-            let currentValue = parseInt(quantityInput.value) || 0;
+            let currentValue = parseInt(quantityInput.value) || 1;
             if (currentValue > 1) {
                 currentValue--;
                 quantityInput.value = currentValue;
+                
+                // Update UI immediately
                 updateItemTotal(item, price, currentValue, totalDisplay);
                 updateCartTotals();
-                // Add animation class
                 animateElement(totalDisplay.parentElement);
+                
+                // Update database
+                updateQuantityInDB(productId, currentValue);
             }
         });
         
-        // Increase button functionality
+        // Increase button
         increaseBtn.addEventListener('click', function() {
-            let currentValue = parseInt(quantityInput.value) || 0;
+            let currentValue = parseInt(quantityInput.value) || 1;
             currentValue++;
             quantityInput.value = currentValue;
+            
+            // Update UI immediately
             updateItemTotal(item, price, currentValue, totalDisplay);
             updateCartTotals();
-            // Add animation class
             animateElement(totalDisplay.parentElement);
+            
+            // Update database
+            updateQuantityInDB(productId, currentValue);
         });
         
-        // Remove button functionality
+        // Remove button
         if (removeBtn) {
-            removeBtn.addEventListener('click', function() {
+            removeBtn.addEventListener('click', async function() {
                 const productId = this.dataset.id;
-                // Animation before removal
-                item.style.animation = 'fadeIn 0.3s ease-out reverse';
-                setTimeout(() => {
-                    item.remove();
-                    updateCartTotals();
+                
+                // Show loading state
+                this.innerHTML = '<span class="remove-icon">⟳</span>';
+                this.disabled = true;
+
+                try {
+                    const formData = new FormData();
+                    formData.append('productId', productId);
+                    formData.append('__RequestVerificationToken', token);
+
+                    const response = await fetch('/Buyer/RemoveProductFromCart', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const result = await response.json();
                     
-                    // If no items left, show empty cart message
-                    if (document.querySelectorAll('.cart-item').length === 0) {
-                        location.reload(); // Reload to show empty cart state
+                    if (result.success) {
+                        // Animation before removal
+                        item.style.animation = 'fadeOut 0.3s ease-out';
+                        
+                        setTimeout(() => {
+                            item.remove();
+                            updateCartTotals();
+
+                            // Check if any items left
+                            const remainingItems = document.querySelectorAll('.cart-item');
+                            if (remainingItems.length === 0) {
+                                location.reload(); // Show empty cart state
+                            }
+                        }, 300);
+                        
+                        showNotification('Product removed successfully', 'success');
+                    } else {
+                        // Reset button state
+                        this.innerHTML = '<span class="remove-icon">×</span>';
+                        this.disabled = false;
+                        showNotification(result.message || 'Failed to remove item', 'error');
                     }
-                    
-                     // Here you would typically make an AJAX request to remove the item from cart on server
-                    // Example:
-                     @* fetch('/Cart/RemoveItem/' + productId, { method: 'POST' })
-                        .then(response => response.json())
-                        .then(data => console.log('Item removed', data));  *@
-                }, 300);
+                } catch (error) {
+                    // Reset button state
+                    this.innerHTML = '<span class="remove-icon">×</span>';
+                    this.disabled = false;
+                    showNotification('Error removing item', 'error');
+                }
             });
         }
     });
     
-    // Apply coupon button functionality
+    // Apply coupon functionality
     if (applyCouponButton) {
         applyCouponButton.addEventListener('click', function() {
             const couponCode = couponInput.value.trim();
             if (couponCode) {
-                // Show loading state
                 this.textContent = 'Applying...';
                 this.disabled = true;
                 
-                // Simulate coupon check (in production, replace with actual API call)
                 setTimeout(() => {
-                    // Reset button state
                     this.textContent = 'Apply Coupon';
                     this.disabled = false;
                     
-                    // For demo, apply a 10% discount if coupon is "SAVE10"
                     if (couponCode.toUpperCase() === 'SAVE10') {
                         const subtotal = calculateSubtotal();
-                        const discount = subtotal * 0.1; // 10% discount
+                        const discount = subtotal * 0.1;
                         
-                        // Update discount and total
                         discountElement.textContent = discount.toFixed(2);
                         const newTotal = subtotal - discount;
                         totalElement.textContent = newTotal.toFixed(2);
                         
-                        // Show success message
                         showNotification('Coupon applied successfully!', 'success');
-                        
-                        // Animate the total
                         animateElement(document.querySelector('.total-row'));
                     } else {
-                        // Show error message
                         showNotification('Invalid coupon code.', 'error');
                     }
                 }, 800);
@@ -236,14 +315,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Helper Functions
-    
-    // Update individual item total
     function updateItemTotal(item, price, quantity, totalDisplay) {
         const itemTotal = price * quantity;
         totalDisplay.textContent = itemTotal.toFixed(2);
     }
     
-    // Calculate subtotal from all items
     function calculateSubtotal() {
         let subtotal = 0;
         document.querySelectorAll('.cart-item').forEach(item => {
@@ -254,7 +330,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return subtotal;
     }
     
-    // Update all cart totals
     function updateCartTotals() {
         const subtotal = calculateSubtotal();
         const discount = parseFloat(discountElement?.textContent || 0);
@@ -268,38 +343,40 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Add animation to an element
+    function updateCartTotalsFromServer(serverTotal) {
+        const discount = parseFloat(discountElement?.textContent || 0);
+        
+        if (subtotalElement) {
+            subtotalElement.textContent = '$' + serverTotal.toFixed(2);
+        }
+        
+        if (totalElement) {
+            totalElement.textContent = (serverTotal - discount).toFixed(2);
+        }
+    }
+    
     function animateElement(element) {
         element.classList.remove('price-update');
-        void element.offsetWidth; // Force reflow
+        void element.offsetWidth;
         element.classList.add('price-update');
     }
     
-    // Show notification
     function showNotification(message, type) {
-        // Create notification element
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
         notification.textContent = message;
         
-        // Add to DOM
         document.body.appendChild(notification);
         
-        // Animation
-        setTimeout(() => {
-            notification.classList.add('show');
-        }, 10);
+        setTimeout(() => notification.classList.add('show'), 10);
         
-        // Remove after delay
         setTimeout(() => {
             notification.classList.remove('show');
-            setTimeout(() => {
-                notification.remove();
-            }, 300);
+            setTimeout(() => notification.remove(), 300);
         }, 3000);
     }
     
-    // Additional styles for notifications
+    // Notification styles
     const style = document.createElement('style');
     style.textContent = `
         .notification {
@@ -328,6 +405,12 @@ document.addEventListener('DOMContentLoaded', function() {
         .notification.error {
             background-color: #e74c3c;
         }
+        
+        .price-update {
+            animation: pulse 0.3s ease;
+        }
+        
+      
     `;
     document.head.appendChild(style);
 });

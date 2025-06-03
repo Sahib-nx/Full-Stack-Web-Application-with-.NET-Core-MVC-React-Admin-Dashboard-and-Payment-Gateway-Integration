@@ -1,4 +1,3 @@
-
 /* Add Bootstrap Icons CSS */
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css");
 /* ===================================================AddTocart==============================Addtocart================================================ */
@@ -8,7 +7,7 @@
     .table-responsive {
         display: none;
     }
-    
+
     .cart-summary {
         border-left: none;
         border-top: 5px solid #C09766;
@@ -52,19 +51,22 @@
     box-shadow: 0 5px 15px rgba(77, 59, 43, 0.2);
 }
 
-.cart-product-row, .mobile-cart-product {
+.cart-product-row,
+.mobile-cart-product {
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border-bottom: 1px solid rgba(192, 151, 102, 0.2);
     opacity: 0;
     transform: translateY(20px);
 }
 
-.cart-product-row:hover, .mobile-cart-product:hover {
+.cart-product-row:hover,
+.mobile-cart-product:hover {
     background-color: rgba(192, 151, 102, 0.1);
     transform: translateY(-3px);
 }
 
-.cart-product-row.visible, .mobile-cart-product.visible {
+.cart-product-row.visible,
+.mobile-cart-product.visible {
     opacity: 1;
     transform: translateY(0);
 }
@@ -109,7 +111,7 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
     transition: all 0.5s ease;
 }
 
@@ -137,7 +139,7 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
     transition: all 0.5s ease;
 }
 
@@ -167,9 +169,18 @@
 }
 
 @keyframes highlight {
-    0% { color: #4D3B2B; }
-    50% { color: #C09766; font-size: 1.2em; }
-    100% { color: #4D3B2B; }
+    0% {
+        color: #4D3B2B;
+    }
+
+    50% {
+        color: #C09766;
+        font-size: 1.2em;
+    }
+
+    100% {
+        color: #4D3B2B;
+    }
 }
 
 @keyframes fadeIn {
@@ -177,6 +188,7 @@
         opacity: 0;
         transform: translateY(30px) scale(0.95);
     }
+
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
@@ -184,9 +196,17 @@
 }
 
 @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 .cart-summary {
@@ -256,7 +276,9 @@ body {
 }
 
 @keyframes titleLine {
-    to { width: 100%; }
+    to {
+        width: 100%;
+    }
 }
 
 .user-profile {
@@ -344,10 +366,21 @@ body {
     animation: cardFadeIn 0.5s ease forwards;
 }
 
-.dashboard-card:nth-child(1) { animation-delay: 0.3s; }
-.dashboard-card:nth-child(2) { animation-delay: 0.5s; }
-.dashboard-card:nth-child(3) { animation-delay: 0.7s; }
-.dashboard-card:nth-child(4) { animation-delay: 0.9s; }
+.dashboard-card:nth-child(1) {
+    animation-delay: 0.3s;
+}
+
+.dashboard-card:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.dashboard-card:nth-child(3) {
+    animation-delay: 0.7s;
+}
+
+.dashboard-card:nth-child(4) {
+    animation-delay: 0.9s;
+}
 
 @keyframes cardFadeIn {
     to {
@@ -367,7 +400,7 @@ body {
     height: 50px;
     background-color: var(--primary);
     /* color: var(--primary-dark); */
-    color:white;
+    color: white;
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -474,6 +507,7 @@ body {
     transform: scaleX(1);
     transform-origin: left;
 }
+
 /* =====================================================Cart===========================================CArt========================================= */
 
 :root {
@@ -595,7 +629,8 @@ body {
     margin-bottom: 0.25rem;
 }
 
-.cart-item-price, .cart-item-total {
+.cart-item-price,
+.cart-item-total {
     text-align: center;
     font-weight: 500;
 }
@@ -811,7 +846,8 @@ body {
     flex-wrap: wrap;
 }
 
-.shop-btn, .orders-btn {
+.shop-btn,
+.orders-btn {
     padding: 0.75rem 1.5rem;
     border-radius: var(--border-radius);
     text-decoration: none;
@@ -829,7 +865,8 @@ body {
     color: var(--secondary);
 }
 
-.shop-btn:hover, .orders-btn:hover {
+.shop-btn:hover,
+.orders-btn:hover {
     transform: translateY(-2px);
 }
 
@@ -839,6 +876,7 @@ body {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -849,11 +887,39 @@ body {
     0% {
         transform: scale(1);
     }
+
     50% {
         transform: scale(1.05);
     }
+
     100% {
         transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(-100%);
     }
 }
 
@@ -862,11 +928,25 @@ body {
     animation-fill-mode: both;
 }
 
-.cart-item:nth-child(1) { animation-delay: 0.1s; }
-.cart-item:nth-child(2) { animation-delay: 0.2s; }
-.cart-item:nth-child(3) { animation-delay: 0.3s; }
-.cart-item:nth-child(4) { animation-delay: 0.4s; }
-.cart-item:nth-child(5) { animation-delay: 0.5s; }
+.cart-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.cart-item:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.cart-item:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.cart-item:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.cart-item:nth-child(5) {
+    animation-delay: 0.5s;
+}
 
 .price-update {
     animation: pulse 0.5s ease-out;
@@ -1359,6 +1439,7 @@ body {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -1369,6 +1450,7 @@ body {
         transform: translateY(20px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -1380,6 +1462,7 @@ body {
         transform: scale(0.9);
         opacity: 0;
     }
+
     to {
         transform: scale(1);
         opacity: 1;
