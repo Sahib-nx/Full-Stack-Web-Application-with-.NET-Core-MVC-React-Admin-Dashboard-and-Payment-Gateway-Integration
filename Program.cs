@@ -13,7 +13,8 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddDbContext<SqlDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("SqlString")) );
 
-builder.Services.AddSingleton<ITokenService , TokenService>();
+builder.Services.AddSingleton<ITokenService, TokenService>();
+builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 
 var app = builder.Build();
 

@@ -1,11 +1,12 @@
 using System;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using CRM.Interfaces;
 using dotenv.net;
 
 namespace CRM.Services;
 
-public class CloudinaryService
+public class CloudinaryService : ICloudinaryService
 {
 
     private readonly Cloudinary _cloudinary;

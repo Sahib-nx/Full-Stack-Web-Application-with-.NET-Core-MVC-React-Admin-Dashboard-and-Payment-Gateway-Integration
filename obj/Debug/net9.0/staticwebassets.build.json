@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "TqY02mDbywiP+zLXV5MgqAWfncsMu78xVbn5e936ezo=",
+  "Hash": "m1VdXvrCKkO2TgTtWEy5XAKtzPfFJlvgw0NcX3bk8vg=",
   "Source": "CRM",
   "BasePath": "_content/CRM",
   "Mode": "Default",
@@ -647,12 +647,12 @@
       "OriginalItemSpec": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\wwwroot\\css\\footer.css"
     },
     {
-      "Identity": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\obj\\Debug\\net9.0\\compressed\\e69hv565qi-souusy826s.gz",
+      "Identity": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\obj\\Debug\\net9.0\\compressed\\e69hv565qi-japni1bmpy.gz",
       "SourceId": "CRM",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\obj\\Debug\\net9.0\\compressed\\",
       "BasePath": "_content/CRM",
-      "RelativePath": "css/Seller#[.{fingerprint=souusy826s}]?.css.gz",
+      "RelativePath": "css/Seller#[.{fingerprint=japni1bmpy}]?.css.gz",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Alternative",
@@ -661,8 +661,8 @@
       "RelatedAsset": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\wwwroot\\css\\Seller.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "47xh6ua184",
-      "Integrity": "UKAiK7CqomAWIKoAj/CKRhN6HY6ubejppp3epqG4BZI=",
+      "Fingerprint": "a7rgacftwv",
+      "Integrity": "the3ZKc1LN9tfMLwI4q9shf1pi/1HUSkEcAC5usXcZw=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\wwwroot\\css\\Seller.css"
@@ -1298,12 +1298,12 @@
       "OriginalItemSpec": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\obj\\Debug\\net9.0\\compressed\\tiirhgeaju-tk8i8llili.gz",
+      "Identity": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\obj\\Debug\\net9.0\\compressed\\tiirhgeaju-up3v0t7afs.gz",
       "SourceId": "CRM",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\obj\\Debug\\net9.0\\compressed\\",
       "BasePath": "_content/CRM",
-      "RelativePath": "css/home#[.{fingerprint=tk8i8llili}]?.css.gz",
+      "RelativePath": "css/home#[.{fingerprint=up3v0t7afs}]?.css.gz",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Alternative",
@@ -1312,8 +1312,8 @@
       "RelatedAsset": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\wwwroot\\css\\home.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "dgq1gld1my",
-      "Integrity": "0y/VL2MeBwStOwe+FajC8ojMavQPBh5lB5lku7LUCJo=",
+      "Fingerprint": "br3d84rfm9",
+      "Integrity": "R1zXPcF+QQIm5tTIUN+/zSbhsZOdfXT85WwXY1h4Vf4=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\wwwroot\\css\\home.css"
@@ -1711,8 +1711,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "tk8i8llili",
-      "Integrity": "7UcTCAQbE/lMKrzL1WHDkvlxqq44IIA6BWkDYiOBny4=",
+      "Fingerprint": "up3v0t7afs",
+      "Integrity": "blceZfeyePfP4tJJMbQgrW6XYtEOurB1Sl0waWqgVd4=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\home.css"
@@ -1816,8 +1816,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "souusy826s",
-      "Integrity": "3FrYRFANDRMvFp4Psu5wLVVLAS8Kn9ApzBErPKpbEZw=",
+      "Fingerprint": "japni1bmpy",
+      "Integrity": "NfrmQHDcUliVFHuNK8UXWRDTp14ES0y62xi0rQUWkMY=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\Seller.css"
@@ -5122,12 +5122,12 @@
     },
     {
       "Route": "css/home.css",
-      "AssetFile": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\obj\\Debug\\net9.0\\compressed\\tiirhgeaju-tk8i8llili.gz",
+      "AssetFile": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\obj\\Debug\\net9.0\\compressed\\tiirhgeaju-up3v0t7afs.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000176553672"
+          "Quality": "0.000176740898"
         }
       ],
       "ResponseHeaders": [
@@ -5137,15 +5137,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "5663"
+          "Value": "5657"
         },
         {
           "Name": "ETag",
-          "Value": "\"0y/VL2MeBwStOwe+FajC8ojMavQPBh5lB5lku7LUCJo=\""
+          "Value": "\"R1zXPcF+QQIm5tTIUN+/zSbhsZOdfXT85WwXY1h4Vf4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 27 Feb 2025 13:44:15 GMT"
+          "Value": "Wed, 04 Jun 2025 09:01:43 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5165,13 +5165,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"7UcTCAQbE/lMKrzL1WHDkvlxqq44IIA6BWkDYiOBny4=\""
+          "Value": "W/\"blceZfeyePfP4tJJMbQgrW6XYtEOurB1Sl0waWqgVd4=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-7UcTCAQbE/lMKrzL1WHDkvlxqq44IIA6BWkDYiOBny4="
+          "Value": "sha256-blceZfeyePfP4tJJMbQgrW6XYtEOurB1Sl0waWqgVd4="
         }
       ]
     },
@@ -5186,7 +5186,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "34748"
+          "Value": "34880"
         },
         {
           "Name": "Content-Type",
@@ -5194,11 +5194,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"7UcTCAQbE/lMKrzL1WHDkvlxqq44IIA6BWkDYiOBny4=\""
+          "Value": "\"blceZfeyePfP4tJJMbQgrW6XYtEOurB1Sl0waWqgVd4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 27 Feb 2025 13:44:15 GMT"
+          "Value": "Wed, 04 Jun 2025 09:01:43 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5208,13 +5208,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-7UcTCAQbE/lMKrzL1WHDkvlxqq44IIA6BWkDYiOBny4="
+          "Value": "sha256-blceZfeyePfP4tJJMbQgrW6XYtEOurB1Sl0waWqgVd4="
         }
       ]
     },
     {
       "Route": "css/home.css.gz",
-      "AssetFile": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\obj\\Debug\\net9.0\\compressed\\tiirhgeaju-tk8i8llili.gz",
+      "AssetFile": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\obj\\Debug\\net9.0\\compressed\\tiirhgeaju-up3v0t7afs.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5223,7 +5223,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "5663"
+          "Value": "5657"
         },
         {
           "Name": "Content-Type",
@@ -5231,11 +5231,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"0y/VL2MeBwStOwe+FajC8ojMavQPBh5lB5lku7LUCJo=\""
+          "Value": "\"R1zXPcF+QQIm5tTIUN+/zSbhsZOdfXT85WwXY1h4Vf4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 27 Feb 2025 13:44:15 GMT"
+          "Value": "Wed, 04 Jun 2025 09:01:43 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5253,18 +5253,18 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-0y/VL2MeBwStOwe+FajC8ojMavQPBh5lB5lku7LUCJo="
+          "Value": "sha256-R1zXPcF+QQIm5tTIUN+/zSbhsZOdfXT85WwXY1h4Vf4="
         }
       ]
     },
     {
-      "Route": "css/home.tk8i8llili.css",
-      "AssetFile": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\obj\\Debug\\net9.0\\compressed\\tiirhgeaju-tk8i8llili.gz",
+      "Route": "css/home.up3v0t7afs.css",
+      "AssetFile": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\obj\\Debug\\net9.0\\compressed\\tiirhgeaju-up3v0t7afs.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000176553672"
+          "Quality": "0.000176740898"
         }
       ],
       "ResponseHeaders": [
@@ -5274,15 +5274,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "5663"
+          "Value": "5657"
         },
         {
           "Name": "ETag",
-          "Value": "\"0y/VL2MeBwStOwe+FajC8ojMavQPBh5lB5lku7LUCJo=\""
+          "Value": "\"R1zXPcF+QQIm5tTIUN+/zSbhsZOdfXT85WwXY1h4Vf4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 27 Feb 2025 13:44:15 GMT"
+          "Value": "Wed, 04 Jun 2025 09:01:43 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5302,13 +5302,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"7UcTCAQbE/lMKrzL1WHDkvlxqq44IIA6BWkDYiOBny4=\""
+          "Value": "W/\"blceZfeyePfP4tJJMbQgrW6XYtEOurB1Sl0waWqgVd4=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "tk8i8llili"
+          "Value": "up3v0t7afs"
         },
         {
           "Name": "label",
@@ -5316,12 +5316,12 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-7UcTCAQbE/lMKrzL1WHDkvlxqq44IIA6BWkDYiOBny4="
+          "Value": "sha256-blceZfeyePfP4tJJMbQgrW6XYtEOurB1Sl0waWqgVd4="
         }
       ]
     },
     {
-      "Route": "css/home.tk8i8llili.css",
+      "Route": "css/home.up3v0t7afs.css",
       "AssetFile": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\wwwroot\\css\\home.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -5331,7 +5331,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "34748"
+          "Value": "34880"
         },
         {
           "Name": "Content-Type",
@@ -5339,11 +5339,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"7UcTCAQbE/lMKrzL1WHDkvlxqq44IIA6BWkDYiOBny4=\""
+          "Value": "\"blceZfeyePfP4tJJMbQgrW6XYtEOurB1Sl0waWqgVd4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 27 Feb 2025 13:44:15 GMT"
+          "Value": "Wed, 04 Jun 2025 09:01:43 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5353,7 +5353,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "tk8i8llili"
+          "Value": "up3v0t7afs"
         },
         {
           "Name": "label",
@@ -5361,13 +5361,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-7UcTCAQbE/lMKrzL1WHDkvlxqq44IIA6BWkDYiOBny4="
+          "Value": "sha256-blceZfeyePfP4tJJMbQgrW6XYtEOurB1Sl0waWqgVd4="
         }
       ]
     },
     {
-      "Route": "css/home.tk8i8llili.css.gz",
-      "AssetFile": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\obj\\Debug\\net9.0\\compressed\\tiirhgeaju-tk8i8llili.gz",
+      "Route": "css/home.up3v0t7afs.css.gz",
+      "AssetFile": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\obj\\Debug\\net9.0\\compressed\\tiirhgeaju-up3v0t7afs.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5376,7 +5376,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "5663"
+          "Value": "5657"
         },
         {
           "Name": "Content-Type",
@@ -5384,11 +5384,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"0y/VL2MeBwStOwe+FajC8ojMavQPBh5lB5lku7LUCJo=\""
+          "Value": "\"R1zXPcF+QQIm5tTIUN+/zSbhsZOdfXT85WwXY1h4Vf4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 27 Feb 2025 13:44:15 GMT"
+          "Value": "Wed, 04 Jun 2025 09:01:43 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5406,7 +5406,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "tk8i8llili"
+          "Value": "up3v0t7afs"
         },
         {
           "Name": "label",
@@ -5414,7 +5414,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-0y/VL2MeBwStOwe+FajC8ojMavQPBh5lB5lku7LUCJo="
+          "Value": "sha256-R1zXPcF+QQIm5tTIUN+/zSbhsZOdfXT85WwXY1h4Vf4="
         }
       ]
     },
@@ -6612,12 +6612,12 @@
     },
     {
       "Route": "css/Seller.css",
-      "AssetFile": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\obj\\Debug\\net9.0\\compressed\\e69hv565qi-souusy826s.gz",
+      "AssetFile": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\obj\\Debug\\net9.0\\compressed\\e69hv565qi-japni1bmpy.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000231267345"
+          "Quality": "0.000188928774"
         }
       ],
       "ResponseHeaders": [
@@ -6627,15 +6627,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "4323"
+          "Value": "5292"
         },
         {
           "Name": "ETag",
-          "Value": "\"UKAiK7CqomAWIKoAj/CKRhN6HY6ubejppp3epqG4BZI=\""
+          "Value": "\"the3ZKc1LN9tfMLwI4q9shf1pi/1HUSkEcAC5usXcZw=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 01 Mar 2025 04:56:47 GMT"
+          "Value": "Wed, 04 Jun 2025 12:17:03 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6655,13 +6655,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"3FrYRFANDRMvFp4Psu5wLVVLAS8Kn9ApzBErPKpbEZw=\""
+          "Value": "W/\"NfrmQHDcUliVFHuNK8UXWRDTp14ES0y62xi0rQUWkMY=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-3FrYRFANDRMvFp4Psu5wLVVLAS8Kn9ApzBErPKpbEZw="
+          "Value": "sha256-NfrmQHDcUliVFHuNK8UXWRDTp14ES0y62xi0rQUWkMY="
         }
       ]
     },
@@ -6676,7 +6676,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "27726"
+          "Value": "35638"
         },
         {
           "Name": "Content-Type",
@@ -6684,11 +6684,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"3FrYRFANDRMvFp4Psu5wLVVLAS8Kn9ApzBErPKpbEZw=\""
+          "Value": "\"NfrmQHDcUliVFHuNK8UXWRDTp14ES0y62xi0rQUWkMY=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 01 Mar 2025 04:56:47 GMT"
+          "Value": "Wed, 04 Jun 2025 12:17:03 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6698,13 +6698,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-3FrYRFANDRMvFp4Psu5wLVVLAS8Kn9ApzBErPKpbEZw="
+          "Value": "sha256-NfrmQHDcUliVFHuNK8UXWRDTp14ES0y62xi0rQUWkMY="
         }
       ]
     },
     {
       "Route": "css/Seller.css.gz",
-      "AssetFile": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\obj\\Debug\\net9.0\\compressed\\e69hv565qi-souusy826s.gz",
+      "AssetFile": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\obj\\Debug\\net9.0\\compressed\\e69hv565qi-japni1bmpy.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6713,7 +6713,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "4323"
+          "Value": "5292"
         },
         {
           "Name": "Content-Type",
@@ -6721,11 +6721,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"UKAiK7CqomAWIKoAj/CKRhN6HY6ubejppp3epqG4BZI=\""
+          "Value": "\"the3ZKc1LN9tfMLwI4q9shf1pi/1HUSkEcAC5usXcZw=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 01 Mar 2025 04:56:47 GMT"
+          "Value": "Wed, 04 Jun 2025 12:17:03 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6743,18 +6743,18 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-UKAiK7CqomAWIKoAj/CKRhN6HY6ubejppp3epqG4BZI="
+          "Value": "sha256-the3ZKc1LN9tfMLwI4q9shf1pi/1HUSkEcAC5usXcZw="
         }
       ]
     },
     {
-      "Route": "css/Seller.souusy826s.css",
-      "AssetFile": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\obj\\Debug\\net9.0\\compressed\\e69hv565qi-souusy826s.gz",
+      "Route": "css/Seller.japni1bmpy.css",
+      "AssetFile": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\obj\\Debug\\net9.0\\compressed\\e69hv565qi-japni1bmpy.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000231267345"
+          "Quality": "0.000188928774"
         }
       ],
       "ResponseHeaders": [
@@ -6764,15 +6764,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "4323"
+          "Value": "5292"
         },
         {
           "Name": "ETag",
-          "Value": "\"UKAiK7CqomAWIKoAj/CKRhN6HY6ubejppp3epqG4BZI=\""
+          "Value": "\"the3ZKc1LN9tfMLwI4q9shf1pi/1HUSkEcAC5usXcZw=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 01 Mar 2025 04:56:47 GMT"
+          "Value": "Wed, 04 Jun 2025 12:17:03 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6792,13 +6792,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"3FrYRFANDRMvFp4Psu5wLVVLAS8Kn9ApzBErPKpbEZw=\""
+          "Value": "W/\"NfrmQHDcUliVFHuNK8UXWRDTp14ES0y62xi0rQUWkMY=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "souusy826s"
+          "Value": "japni1bmpy"
         },
         {
           "Name": "label",
@@ -6806,12 +6806,12 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-3FrYRFANDRMvFp4Psu5wLVVLAS8Kn9ApzBErPKpbEZw="
+          "Value": "sha256-NfrmQHDcUliVFHuNK8UXWRDTp14ES0y62xi0rQUWkMY="
         }
       ]
     },
     {
-      "Route": "css/Seller.souusy826s.css",
+      "Route": "css/Seller.japni1bmpy.css",
       "AssetFile": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\wwwroot\\css\\Seller.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -6821,7 +6821,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "27726"
+          "Value": "35638"
         },
         {
           "Name": "Content-Type",
@@ -6829,11 +6829,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"3FrYRFANDRMvFp4Psu5wLVVLAS8Kn9ApzBErPKpbEZw=\""
+          "Value": "\"NfrmQHDcUliVFHuNK8UXWRDTp14ES0y62xi0rQUWkMY=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 01 Mar 2025 04:56:47 GMT"
+          "Value": "Wed, 04 Jun 2025 12:17:03 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6843,7 +6843,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "souusy826s"
+          "Value": "japni1bmpy"
         },
         {
           "Name": "label",
@@ -6851,13 +6851,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-3FrYRFANDRMvFp4Psu5wLVVLAS8Kn9ApzBErPKpbEZw="
+          "Value": "sha256-NfrmQHDcUliVFHuNK8UXWRDTp14ES0y62xi0rQUWkMY="
         }
       ]
     },
     {
-      "Route": "css/Seller.souusy826s.css.gz",
-      "AssetFile": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\obj\\Debug\\net9.0\\compressed\\e69hv565qi-souusy826s.gz",
+      "Route": "css/Seller.japni1bmpy.css.gz",
+      "AssetFile": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\obj\\Debug\\net9.0\\compressed\\e69hv565qi-japni1bmpy.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6866,7 +6866,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "4323"
+          "Value": "5292"
         },
         {
           "Name": "Content-Type",
@@ -6874,11 +6874,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"UKAiK7CqomAWIKoAj/CKRhN6HY6ubejppp3epqG4BZI=\""
+          "Value": "\"the3ZKc1LN9tfMLwI4q9shf1pi/1HUSkEcAC5usXcZw=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 01 Mar 2025 04:56:47 GMT"
+          "Value": "Wed, 04 Jun 2025 12:17:03 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6896,7 +6896,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "souusy826s"
+          "Value": "japni1bmpy"
         },
         {
           "Name": "label",
@@ -6904,7 +6904,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-UKAiK7CqomAWIKoAj/CKRhN6HY6ubejppp3epqG4BZI="
+          "Value": "sha256-the3ZKc1LN9tfMLwI4q9shf1pi/1HUSkEcAC5usXcZw="
         }
       ]
     },

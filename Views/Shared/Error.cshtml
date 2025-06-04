@@ -3,38 +3,401 @@
     ViewData["Title"] = "Error";
 }
 
+<link rel="stylesheet" href="~/css/home.css">
 
 <style>
+    @@import
+    url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-  .error{
-    display: flex;
-    flex-direction: column  ;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    :root {
+        --gold: #C09766;
+        --light-cream: #F3EBE1;
+        --dark-brown: #4D3B2B;
+        --cream: #EADDCE;
+        --medium-brown: #8b6f47;
+        --pale-gold: #F5E5CC;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, var(--pale-gold) 0%, var(--cream) 50%, var(--light-cream) 100%);
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    .error {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 2rem;
+        position: relative;
+    }
+
+     /* Animated background particles 
+    .error::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image:
+            radial-gradient(circle at 20% 80%, rgba(192, 151, 102, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(139, 111, 71, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 40% 40%, rgba(245, 229, 204, 0.4) 0%, transparent 50%);
+        animation: float 20s ease-in-out infinite;
+        pointer-events: none;
+    }
+
+    @@keyframes
+    float {
+
+        0%,
+        100% {
+            transform: translateY(0px) rotate(0deg);
+        }
+
+        33% {
+            transform: translateY(-30px) rotate(1deg);
+        }
+
+        66% {
+            transform: translateY(-10px) rotate(-1deg);
+        }
+    } */
+
+     .error-container {
+        background: rgba(243, 235, 225, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        padding: 3rem;
+        box-shadow:
+            0 32px 64px rgba(77, 59, 43, 0.15),
+            0 0 0 1px rgba(192, 151, 102, 0.2);
+        text-align: center;
+        max-width: 600px;
+        width: 100%;
+        position: relative;
+        animation: slideInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        transform-origin: center bottom;
+    } 
+
+    @@keyframes
+    slideInUp {
+        0% {
+            opacity: 0;
+            transform: translateY(60px) scale(0.95);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    .error-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 2rem;
+        background: linear-gradient(135deg, var(--gold), var(--medium-brown));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: pulse 2s ease-in-out infinite;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .error-icon::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        animation: shimmer 3s ease-in-out infinite;
+    }
+
+    @@keyframes
+    pulse {
+
+        0%,
+        100% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+    }
+
+    @@keyframes
+    shimmer {
+        0% {
+            transform: translateX(-100%) translateY(-100%) rotate(45deg);
+        }
+
+        100% {
+            transform: translateX(100%) translateY(100%) rotate(45deg);
+        }
+    }
+
+    .error-icon svg {
+        width: 40px;
+        height: 40px;
+        color: white;
+        z-index: 1;
+        position: relative;
+    }
+
+    .error-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--dark-brown), var(--medium-brown));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+    }
+
+    .error-subtitle {
+        font-size: 1.1rem;
+        color: var(--medium-brown);
+        margin-bottom: 2rem;
+        line-height: 1.6;
+        font-weight: 400;
+    }
+
+    .error-message {
+        background: linear-gradient(135deg, var(--pale-gold), var(--light-cream));
+        border: 1px solid var(--gold);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        color: var(--dark-brown);
+        font-weight: 500;
+        position: relative;
+        animation: fadeInScale 0.6s ease-out 0.3s both;
+    }
+
+    @@keyframes
+    fadeInScale {
+        0% {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .error-message::before {
+        content: '';
+        position: absolute;
+        top: -1px;
+        left: -1px;
+        right: -1px;
+        bottom: -1px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, var(--gold), var(--medium-brown));
+        z-index: -1;
+        opacity: 0.1;
+    }
+
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: linear-gradient(135deg, var(--gold), var(--medium-brown));
+        color: white;
+        padding: 0.875rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 8px 16px rgba(192, 151, 102, 0.3);
+        border: none;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .back-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .back-button:hover::before {
+        left: 100%;
+    }
+
+    .back-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px rgba(192, 151, 102, 0.4);
+    }
+
+    .back-button:active {
+        transform: translateY(0);
+    }
+
+    /* Floating elements */
+    .floating-shapes {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    .shape {
+        position: absolute;
+        opacity: 0.1;
+        animation: floatShape 15s ease-in-out infinite;
+    }
+
+    .shape:nth-child(1) {
+        top: 10%;
+        left: 10%;
+        width: 60px;
+        height: 60px;
+        background: var(--gold);
+        border-radius: 50%;
+        animation-delay: 0s;
+    }
+
+    .shape:nth-child(2) {
+        top: 20%;
+        right: 10%;
+        width: 40px;
+        height: 40px;
+        background: var(--medium-brown);
+        border-radius: 8px;
+        animation-delay: -5s;
+    }
+
+    .shape:nth-child(3) {
+        bottom: 20%;
+        left: 20%;
+        width: 80px;
+        height: 80px;
+        background: var(--pale-gold);
+        border-radius: 50%;
+        animation-delay: -10s;
+    }
+
+    @@keyframes
+    floatShape {
+
+        0%,
+        100% {
+            transform: translateY(0px) rotate(0deg);
+        }
+
+        33% {
+            transform: translateY(-40px) rotate(120deg);
+        }
+
+        66% {
+            transform: translateY(-20px) rotate(240deg);
+        }
+    }
+
+    /* Responsive design */
+    @@media
+    (max-width: 768px) {
+        .error-container {
+            padding: 2rem;
+            margin: 1rem;
+        }
+
+        .error-title {
+            font-size: 2rem;
+        }
+
+        .error-subtitle {
+            font-size: 1rem;
+        }
+
+        .error-icon {
+            width: 60px;
+            height: 60px;
+        }
+
+        .error-icon svg {
+            width: 30px;
+            height: 30px;
+        }
     }
 </style>
-  
 
-<div class="container error" >
-  
-    <h2 class="text-danger">An error occurred while processing your request.</h2>
+<div class="container error">
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
 
-    @if (ViewBag.errorMessage != null)
-    {
-        <p style="color: red;"> @ViewBag.errorMessage </p>
-    }
+    <div class="error-container">
+        <div class="error-icon">
+            <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                    clip-rule="evenodd"></path>
+            </svg>
+        </div>
+
+        <h1 class="error-title">Oops! Something went wrong</h1>
+        <p class="error-subtitle">We encountered an unexpected error while processing your request. Don't worry,This is our Policy.</p>
+
+        @if (ViewBag.errorMessage != null)
+        {
+            <div class="error-message">
+                @ViewBag.errorMessage
+            </div>
+        }
+
+        <button class="back-button" onclick="history.back()">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                    d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+            </svg>
+            Go Back
+        </button>
+    </div>
 </div>
 
-
-@* 
+@*
 @if (Model.ShowRequestId)
 {
     <p>
         <strong>Request ID:</strong> <code>@Model.RequestId</code>
     </p>
-} *@
-@* 
+}
+*@
+
+@*
 <h3>Development Mode</h3>
 <p>
     Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
@@ -44,4 +407,5 @@
     It can result in displaying sensitive information from exceptions to end users.
     For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
     and restarting the app.
-</p> *@
+</p>
+*@

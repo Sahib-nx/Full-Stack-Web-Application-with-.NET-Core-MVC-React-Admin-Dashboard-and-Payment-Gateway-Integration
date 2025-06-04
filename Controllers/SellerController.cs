@@ -14,11 +14,14 @@ namespace CRM.Controllers
         private readonly SqlDbContext _dbcontext;
         private readonly ITokenService _tokenService;
         private readonly HybridModel _viewModel;
+        private readonly ICloudinaryService _cloudinaryService;
 
-        public SellerController(SqlDbContext dbContext, ITokenService tokenService)
+        public SellerController(SqlDbContext dbContext, ICloudinaryService cloudinaryService, ITokenService tokenService)
         {
             _dbcontext = dbContext;
             _tokenService = tokenService;
+            _cloudinaryService = cloudinaryService;
+
             _viewModel = new HybridModel
             {
                 Navbar = new NavbarModel { UserRole = Types.Role.Seller, Isloggedin = true },
@@ -196,7 +199,7 @@ namespace CRM.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct(Product product)
+        public async Task<IActionResult> CreateProduct(Product product, IFormFile file)
         {
             try
             {
@@ -215,6 +218,15 @@ namespace CRM.Controllers
 
                 if (user.Role == Types.Role.Seller)
                 {
+                    if (file == null || file.Length == 0)
+                    {
+                        ModelState.AddModelError("file", "Please upload a valid image file.");
+                        return View(_viewModel);
+                    }
+                    // Upload product image using cloudinary service
+                    var uploadUrl = await _cloudinaryService.UploadImageAsync(file);
+                    // Assign the uploaded image URL to the product's ProductProfileUrl property
+                    product.ProductProfileUrl = uploadUrl.ToString();
                     product.SellerId = user.UserId;
                     _dbcontext.Products.Add(product);
                     await _dbcontext.SaveChangesAsync();
@@ -226,9 +238,7 @@ namespace CRM.Controllers
             catch (Exception ex)
             {
                 return BadRequest($"Error: {ex.InnerException?.Message ?? ex.Message}");
-
             }
-
         }
 
 

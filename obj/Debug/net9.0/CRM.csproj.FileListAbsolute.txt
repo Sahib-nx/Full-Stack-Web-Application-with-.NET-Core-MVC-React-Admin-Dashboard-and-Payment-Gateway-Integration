@@ -408,11 +408,9 @@ C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\obj\Debug\net9.0\
 C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\obj\Debug\net9.0\scopedcss\projectbundle\CRM.bundle.scp.css
 C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\obj\Debug\net9.0\compressed\ihwriifpm5-rhztfl8j8v.gz
 C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\obj\Debug\net9.0\compressed\dprqgjjniz-5cj9itjsgi.gz
-C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\obj\Debug\net9.0\compressed\tiirhgeaju-tk8i8llili.gz
 C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\obj\Debug\net9.0\compressed\4fkupcgrsp-qd39323uvz.gz
 C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\obj\Debug\net9.0\compressed\q80fqrx9z3-du6jo6yqdz.gz
 C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\obj\Debug\net9.0\compressed\vbgy6vz87j-3wiy9hc0t0.gz
-C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\obj\Debug\net9.0\compressed\e69hv565qi-souusy826s.gz
 C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\obj\Debug\net9.0\compressed\6iw9ohfvxe-q7y5eyeaoq.gz
 C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\obj\Debug\net9.0\compressed\lvak7sxkem-61n19gt1b8.gz
 C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\obj\Debug\net9.0\compressed\wx8kt1uzsy-dl5sxr28ii.gz
@@ -496,3 +494,5 @@ C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\obj\Debug\net9.0\
 C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\obj\Debug\net9.0\ref\CRM.dll
 C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\obj\Debug\net9.0\compressed\1i8t1hpizk-18lr313dn4.gz
 C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\CRM\obj\Debug\net9.0\compressed\rxizp6nufq-wz4652xkdk.gz
+C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\obj\Debug\net9.0\compressed\tiirhgeaju-up3v0t7afs.gz
+C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\CRM\obj\Debug\net9.0\compressed\e69hv565qi-japni1bmpy.gz

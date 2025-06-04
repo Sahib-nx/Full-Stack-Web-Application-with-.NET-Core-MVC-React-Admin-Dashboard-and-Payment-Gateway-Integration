@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using CRM.Models;
+using CRM.Models.DomainModel;
 using CRM.Models.JunctionModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.JSInterop.Infrastructure;
@@ -22,6 +23,7 @@ public class SqlDbContext : DbContext
   public DbSet<Address> Addresses { get; set; }
   public DbSet<CartProduct> CartProducts { get; set; }
   public DbSet<OrderProduct> OrderProducts {get; set;}
+  public DbSet<Review> Reviews { get; set;}
 
 
 
@@ -65,15 +67,15 @@ public class SqlDbContext : DbContext
     modelBuilder.Entity<CartProduct>()
    .HasKey(cp => cp.CartProductId);
 
-   modelBuilder.Entity<CartProduct>()
-   .HasOne(cp => cp.Cart)
-   .WithMany(c => c.CartProducts)
-   .HasForeignKey(cp => cp.CartId);
+    modelBuilder.Entity<CartProduct>()
+    .HasOne(cp => cp.Cart)
+    .WithMany(c => c.CartProducts)
+    .HasForeignKey(cp => cp.CartId);
 
-   modelBuilder.Entity<CartProduct>()
-   .HasOne(cp => cp.Product)
-   .WithMany(p => p.Carts)
-   .HasForeignKey(cp => cp.ProductId);
+    modelBuilder.Entity<CartProduct>()
+    .HasOne(cp => cp.Product)
+    .WithMany(p => p.Carts)
+    .HasForeignKey(cp => cp.ProductId);
 
 
     //    many to many relationShip between order and products
