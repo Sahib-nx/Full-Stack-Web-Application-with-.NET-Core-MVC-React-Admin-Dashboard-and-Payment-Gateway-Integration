@@ -56,17 +56,20 @@
                 <div class="product-details">
                     <h2 class="product-title">@Model.Product.ProductName</h2>
                     
-                    @if (@Model.Product.IsArchived)
-                    {
-                        <p class="unavailable">
-                            <i class="fas fa-exclamation-circle me-1"></i>Product Unavailable
-                        </p>
-                    }
-                    else
-                    {
-                        <p class="availability">Available: <span>@Model.Product.Qty</span></p>
-                    }
-
+                    @if (Model.Product.IsArchived)
+                        {
+                            <div class="availability-badge unavailable">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span>Product Unavailable</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="availability-badge available">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Available: <strong>@Model.Product.Qty in stock</strong></span>
+                            </div>
+                        }
                     <div class="description-container">
                         <p class="description">@Model.Product.ProductDescription</p>
                     </div>

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\CRM.csproj": {}
+    "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\crm\\CRM.csproj": {}
   },
   "projects": {
-    "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\CRM.csproj": {
+    "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\crm\\CRM.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\CRM.csproj",
+        "projectUniqueName": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\crm\\CRM.csproj",
         "projectName": "CRM",
-        "projectPath": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\CRM.csproj",
+        "projectPath": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\crm\\CRM.csproj",
         "packagesPath": "C:\\Users\\sahib\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\CRM\\obj\\",
+        "outputPath": "C:\\Users\\sahib\\OneDrive\\Desktop\\ASP .NET Core Learning\\CRM\\crm\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -71,6 +71,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[9.0.1, )"
+            },
+            "Razorpay": {
+              "target": "Package",
+              "version": "[3.1.4, )"
             },
             "System.Composition.TypedParts": {
               "target": "Package",

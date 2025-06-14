@@ -65,6 +65,8 @@ namespace CRM.Controllers
                 {
                     _viewModel.Navbar.UserRole = Types.Role.Seller;
                     _viewModel.Navbar.Isloggedin = true;
+                    
+                    ViewBag.UserName = user.UserName;
 
                     return View(_viewModel);
                 }

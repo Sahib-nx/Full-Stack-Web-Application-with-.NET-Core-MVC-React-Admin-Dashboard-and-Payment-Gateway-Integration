@@ -493,6 +493,8 @@ C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\obj\Debug\net9.0\
 C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\obj\Debug\net9.0\CRM.genruntimeconfig.cache
 C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\obj\Debug\net9.0\ref\CRM.dll
 C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\obj\Debug\net9.0\compressed\1i8t1hpizk-18lr313dn4.gz
-C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\CRM\obj\Debug\net9.0\compressed\rxizp6nufq-wz4652xkdk.gz
 C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\obj\Debug\net9.0\compressed\tiirhgeaju-up3v0t7afs.gz
-C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\CRM\obj\Debug\net9.0\compressed\e69hv565qi-japni1bmpy.gz
+C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\bin\Debug\net9.0\BouncyCastle.Crypto.dll
+C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\bin\Debug\net9.0\Razorpay.dll
+C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\obj\Debug\net9.0\compressed\e69hv565qi-lxpva5cz1f.gz
+C:\Users\sahib\OneDrive\Desktop\ASP .NET Core Learning\CRM\crm\obj\Debug\net9.0\compressed\rxizp6nufq-6j6zy41mgm.gz

@@ -15,7 +15,7 @@
         <h2>Complete Your Payment</h2>
         <p>Please review your order details before proceeding</p>
     </div>
-    
+
     <div class="payment-body">
         <div class="order-info">
             <div class="order-info-item">
@@ -27,7 +27,7 @@
                 <span id="amount" class="amount-highlight">@Model?.Order?.OrderPrice $</span>
             </div>
         </div>
-        
+
         <div class="products-list">
             <h3>Products</h3>
             @if (Model?.OrderProducts != null && Model.OrderProducts.Any())
@@ -45,7 +45,7 @@
                 <p>No products found</p>
             }
         </div>
-        
+
         <div class="address-box">
             <h3>Shipping Address</h3>
             @if (Model?.Address != null)
@@ -63,7 +63,7 @@
                 <p>No address information available</p>
             }
         </div>
-        
+
         <button id="payNowBtn" class="payment-button" type="button" onclick="payNow()">
             Pay Now
         </button>
@@ -81,50 +81,60 @@
         const button = document.getElementById('payNowBtn');
         button.innerHTML = 'Processing...';
         button.disabled = true;
-        
+
         // Show processing overlay with animation
         const overlay = document.getElementById('processingOverlay');
         overlay.classList.add('show');
-        
+
         console.log("Payment initiated");
-        const amount = parseFloat(document.getElementById('amount').innerText);
+
+        // Get amount and remove any non-numeric characters except decimal point
+        const amountText = document.getElementById('amount').innerText.replace(/[^\d.]/g, '');
+        const amount = parseFloat(amountText);
         const orderId = document.getElementById('orderId').innerText;
         const phone = document.getElementById('customerPhone')?.innerText || '';
-        
-        if (!amount || amount <= 0) {
+
+        console.log("Amount parsed:", amount);
+        console.log("Order ID:", orderId);
+
+        if (!amount || amount <= 0 || isNaN(amount)) {
             hideProcessing();
-            showNotification('Invalid amount', 'error');
+            showNotification('Invalid amount: ' + amountText, 'error');
             return;
         }
-        
+
         try {
             // Create order by calling the server endpoint
-            const response = await fetch('/paymentApi/create/paymentIntent', {
+            const response = await fetch('/api/paymentApi/create/paymentIntent', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ 
-                    amount: amount, 
-                    currency: 'INR', 
-                    orderId: orderId 
+                body: JSON.stringify({
+                    amount: amount,
+                    currency: 'INR',
+                    orderId: orderId
                 })
             });
-            
+
+            console.log("Response status:", response.status);
+
             if (!response.ok) {
-                throw new Error('Failed to create payment intent');
+                const errorText = await response.text();
+                console.error("Server response:", errorText);
+                throw new Error(`Server error: ${response.status} - ${errorText}`);
             }
-            
+
             const order = await response.json();
-            console.log(order);
-            
+            console.log("Order created:", order);
+
             // Hide processing overlay before opening Razorpay
             hideProcessing();
-            
+
             // Open Razorpay Checkout
             const options = {
                 key: 'rzp_test_RgG9AwfnysizZu',
-                amount: order.amount,
+                amount: order.amount, // This comes from server (already in paise)
                 currency: order.currency,
                 name: 'Sahib',
                 description: 'Payment Transaction',
@@ -138,47 +148,49 @@
                     color: '#C09766'
                 },
                 modal: {
-                    ondismiss: function() {
+                    ondismiss: function () {
                         resetButton();
                     }
                 },
-                handler: function(response) {
+                handler: function (response) {
                     // Handle successful payment
+                    console.log("Payment successful:", response);
                     showNotification('Payment successful!', 'success');
                     setTimeout(() => {
-                        window.location.href = '/Order/Payment-success?orderId=' + orderId;
-                    }, 1500);
+                        /* window.location.href = '/Order/Payment-success?orderId=' + orderId; */
+                        window.location.href = '/buyer/myorders?orderId=' + orderId;
+                    }, 1000);
                 }
             };
-            
+
             const rzp = new Razorpay(options);
             rzp.open();
-            
+
         } catch (error) {
             console.error('Payment error:', error);
             hideProcessing();
             showNotification(error.message || 'Payment processing failed', 'error');
         }
     }
-    
+
     function hideProcessing() {
         const overlay = document.getElementById('processingOverlay');
         overlay.classList.remove('show');
         resetButton();
     }
-    
+
     function resetButton() {
         const button = document.getElementById('payNowBtn');
         button.innerHTML = 'Pay Now';
         button.disabled = false;
     }
-    
+
     function showNotification(message, type) {
         // Create notification element
         const notification = document.createElement('div');
         notification.className = 'notification ' + type;
         notification.innerHTML = message;
-        
+
         // Style the notification
         Object.assign(notification.style, {
             position: 'fixed',
@@ -194,16 +206,16 @@
             transform: 'translateY(-20px)',
             transition: 'all 0.3s ease'
         });
-        
+
         // Add to DOM
         document.body.appendChild(notification);
-        
+
         // Trigger animation
         setTimeout(() => {
             notification.style.opacity = '1';
             notification.style.transform = 'translateY(0)';
         }, 10);
-        
+
         // Remove after delay
         setTimeout(() => {
             notification.style.opacity = '0';
